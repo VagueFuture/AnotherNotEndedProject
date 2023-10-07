@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28b4394c452442b48a9c4c942d81d6f0, type: 3}
+  m_Name: ItemWeaponSword
+  m_EditorClassIdentifier: 
+  imageOnInventory: {fileID: 21300000, guid: 0b8c3b5a9de1d6745b098a8339050eeb, type: 3}
+  typeItem: 0
+  tredeStatus: 0
+  magickStatus: 0
+  price: 5
+  modelTypePrefub: {fileID: 3687064008795047442, guid: 730e1644e43e3234fb1737aaa902f95e, type: 3}
+  stength: 5
+  defendce: 1
+  checkCount: 2
+  infinityCheck: 0
+  attackSpeed: 0.5
