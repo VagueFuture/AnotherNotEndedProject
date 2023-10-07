@@ -235,14 +235,14 @@ MonoBehaviour:
     positionForCamera: {fileID: 1261685833214798667}
     animator: {fileID: 0}
     animTrigger: 
-    enemy: {fileID: 0}
+    enemy: {fileID: 7441565486816372843}
     giveItem: {fileID: 0}
     needButtonContinue: 1
     needButtonSkip: 1
     addNewObj: []
     removeObj: []
+  actionStarted: 0
   tonnelObjects: []
-  enemy: {fileID: 7441565486816372843}
 --- !u!1 &8073028881776499940
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,6 +415,10 @@ PrefabInstance:
     - target: {fileID: 6335931662123355027, guid: a73ccd60d26704f4787db73e3e29e868, type: 3}
       propertyPath: m_Name
       value: Enemy_First
+      objectReference: {fileID: 0}
+    - target: {fileID: 6335931662123355027, guid: a73ccd60d26704f4787db73e3e29e868, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7086772023706669337, guid: a73ccd60d26704f4787db73e3e29e868, type: 3}
       propertyPath: m_RootOrder

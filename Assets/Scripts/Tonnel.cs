@@ -16,9 +16,11 @@ public class Tonnel : MonoBehaviour
     protected int number_step = 0;
 
     protected IEnumerator corr = null;
-    protected bool jumpEnded = true, showEnded = true, actionStarted;
+    protected bool jumpEnded = true, showEnded = true;
+    public bool actionStarted;
     public List<InTonnelObject> tonnelObjects = new List<InTonnelObject>();
 
+    protected Character player;
     #region VirtualMetods
     public virtual void StartVitrual()
     {
@@ -29,12 +31,17 @@ public class Tonnel : MonoBehaviour
     {
         DoActionStep(0);
         AttachActions();
+        this.player = player;
     }
 
 
     public virtual void ActionOnTonnel()
     {
         actionStarted = true;
+        if (!jumpEnded || !showEnded || !actionStarted)
+            return;
+        number_step++;
+        DoActionStep(number_step);
     }
 
     public virtual void SkipTonnel()
@@ -69,37 +76,13 @@ public class Tonnel : MonoBehaviour
         if (actionSteps.Count > number)
         {
             ActionSteps step = actionSteps[number];
-            step.ShowAnimation();
-            tonnelObjects = step.GetTonnelObjects(tonnelObjects);
 
-            if (step.positionToJump != null && number!=0)
-                GameManager.Inst.character.JumpInTonnel(step.positionToJump.position);
-            
-            Action showTonnelInfo = () =>
-            {
-                if (step.giveItem != null)
-                    step.GiveItem();
-                if (step.needButtonContinue && step.needButtonSkip)
-                {
-                    actionStarted = false;
-                    ShowInfo(step.tommelImage, step.textKey, tonnelObjects, () => { ActionOnTonnel(); }, () => { SkipTonnel(); });
-                }
-                else
-                if (step.needButtonContinue)
-                {
-                    actionStarted = false;
-                    ShowInfo(step.tommelImage, step.textKey, tonnelObjects, () => { ActionOnTonnel(); });
-                }
-                else
-                {
-                    ShowInfo(step.tommelImage, step.textKey, tonnelObjects);
-                }
-            };
+            GameManager.Inst.character.JumpInTonnel(step.positionToJump.position);
 
             if (step.positionForCamera != null)
-                GameManager.Inst.cameraManager.MoveCameraToPosition(step.positionForCamera,showTonnelInfo);
+                GameManager.Inst.cameraManager.MoveCameraToPosition(step.positionForCamera, () => { step.DoStep(this,player); });
             else
-                showTonnelInfo?.Invoke();
+                step.DoStep(this, player);
         }
         else
             LeaveTonnel();
@@ -165,11 +148,52 @@ public class ActionSteps
     public Transform positionToJump, positionForCamera;
     public Animator animator;
     public string animTrigger = "Show";
-    public GameObject enemy;
+    public Enemy enemy;
     public Item giveItem;
     public bool needButtonContinue, needButtonSkip;
     public List<InTonnelObject> addNewObj = new List<InTonnelObject>();
     public List<InTonnelObject> removeObj = new List<InTonnelObject>();
+
+    public void DoStep(Tonnel tonnel, Character player)
+    {
+        Action enemyForward = null;
+        ShowAnimation();
+        List<InTonnelObject> tonnelObjects = GetTonnelObjects(tonnel.tonnelObjects);
+
+
+        if (giveItem != null)
+            GiveItem();
+
+        if (enemy != null)
+        {
+            enemyForward = () =>
+            {
+                enemy.GenerateEquip();
+                FightMode.Inst.InitFightMode(tonnel, () => { enemy = null; });
+                UiController.Inst.panelTonnelInfo.Hide();
+                FightMode.Inst.Fight(player.controller, enemy.controller);
+            };
+            tonnel.ShowInfo(tommelImage, textKey, tonnelObjects, () => { enemyForward?.Invoke(); }, () => { tonnel.SkipTonnel(); });
+            return;
+        }
+
+
+        if (needButtonContinue && needButtonSkip)
+        {
+            tonnel.actionStarted = false;
+            tonnel.ShowInfo(tommelImage, textKey, tonnelObjects, () => { tonnel.ActionOnTonnel(); enemyForward?.Invoke(); }, () => { tonnel.SkipTonnel(); });
+        }
+        else
+        if (needButtonContinue)
+        {
+            tonnel.actionStarted = false;
+            tonnel.ShowInfo(tommelImage, textKey, tonnelObjects, () => { tonnel.ActionOnTonnel(); enemyForward?.Invoke(); });
+        }
+        else
+        {
+            tonnel.ShowInfo(tommelImage, textKey, tonnelObjects);
+        }
+    }
 
     public void ShowAnimation()
     {

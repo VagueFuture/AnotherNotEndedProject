@@ -20,6 +20,8 @@ public class FightMode : MonoBehaviour
 
     IEnumerator corr = null, corrWhait = null;
 
+    Action onFightEnd;
+
     private static FightMode _Instance;
     public static FightMode Inst
     {
@@ -31,11 +33,12 @@ public class FightMode : MonoBehaviour
         }
     }
 
-    public void InitFightMode(Tonnel owner)
+    public void InitFightMode(Tonnel owner, Action onFightEnd)
     {
         tonnelOwner = owner;
         GameManager.Inst.OnScreenPress += OnScreenPress;
         panelFighPhase = UiController.Inst.panelFighPhase;
+        this.onFightEnd = onFightEnd;
     }
 
     public void OnScreenPress()
@@ -193,6 +196,7 @@ public class FightMode : MonoBehaviour
         else
         {
             GameManager.Inst.storyController.playerGoldCount += (int)(Defender.stats.strength + Defender.stats.defendce)*2;
+            onFightEnd?.Invoke();
             tonnelOwner.LeaveTonnel();
         }
     }

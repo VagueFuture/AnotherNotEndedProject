@@ -11,5 +11,6 @@ public enum TonnelType
     Shop,
     DoubleTonnel,
     Enemy,
+    Graves,
     NumOf
 }

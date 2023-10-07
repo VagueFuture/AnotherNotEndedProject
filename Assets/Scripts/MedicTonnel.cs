@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class MedicTonnel : Tonnel
 {
-    private Character player;
     public override void PlayerIsCome(Character player)
     {
         base.PlayerIsCome(player);
-        this.player = player;
     }
     public override void ActionOnTonnel()
     {

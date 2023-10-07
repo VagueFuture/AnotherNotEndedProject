@@ -5278,7 +5278,7 @@ MonoBehaviour:
     animTrigger: 
     enemy: {fileID: 0}
     giveItem: {fileID: 0}
-    needButtonContinue: 1
+    needButtonContinue: 0
     needButtonSkip: 1
     addNewObj: []
     removeObj: []

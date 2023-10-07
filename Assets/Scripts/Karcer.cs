@@ -17,10 +17,7 @@ public class Karcer : Tonnel
 
     public void StartAction()
     {
-        if (!jumpEnded || !showEnded || !actionStarted)
-            return;
-        number_step++;
-        DoActionStep(number_step);
+
     }
 
     public override void OnCharacterJumpInPosition(Character character)
