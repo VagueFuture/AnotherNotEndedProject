@@ -197,7 +197,6 @@ public class FightMode : MonoBehaviour
         {
             GameManager.Inst.storyController.playerGoldCount += (int)(Defender.stats.strength + Defender.stats.defendce)*2;
             onFightEnd?.Invoke();
-            tonnelOwner.LeaveTonnel();
         }
     }
 

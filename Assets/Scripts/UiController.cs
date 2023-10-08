@@ -35,6 +35,7 @@ public class UiController : MonoBehaviour
     public LootingPanel lootingPanel;
 
     public Inventory playerInventory;
+
     public void OnPressButtonForward()
     {
         panelTonnelInfo.Hide();
@@ -68,21 +69,9 @@ public class UiController : MonoBehaviour
     }
 
     #region TonnelInfo
-    public void ShowTonnelInfo(Sprite tonnelImage, string key, List<InTonnelObject> inTonnelObjects, Action ActionOnTonnel, Action SkipTonnel)
+    public void ShowTonnelInfo(TonnelInfo tonnelInfo)
     {
-        panelTonnelInfo.FillPanel(tonnelImage, key, inTonnelObjects, ActionOnTonnel, SkipTonnel);
-        panelTonnelInfo.Show();
-    }
-
-    public void ShowTonnelInfo(Sprite tonnelImage, string key, List<InTonnelObject> inTonnelObjects, Action ActionOnTonnel)
-    {
-        panelTonnelInfo.FillPanel(tonnelImage, key, inTonnelObjects, ActionOnTonnel);
-        panelTonnelInfo.Show();
-    }
-
-    public void ShowTonnelInfo(Sprite tonnelImage, string key, List<InTonnelObject> inTonnelObjects)
-    {
-        panelTonnelInfo.FillPanel(tonnelImage, key, inTonnelObjects);
+        panelTonnelInfo.FillPanel(tonnelInfo);
         panelTonnelInfo.Show();
     }
     #endregion
@@ -106,11 +95,26 @@ public class UiController : MonoBehaviour
     {
         panelShop.PressButtonTrade();
     }
+    
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
             GameManager.Inst.OnScreenPress?.Invoke();
     }
+}
+
+public class TonnelInfo
+{
+    public Sprite tonnelImage;
+    public string tonnelText;
+    public List<InTonnelObject> inTonnelObjects = new List<InTonnelObject>();
+
+    public bool showed;
+
+    public Action ActivteTonnel = null;
+    public Action SkipTonnel = null;
+
+    public int priority = 0;
 }
 
 [System.Serializable]
@@ -125,40 +129,27 @@ public class PanelTonnelInfo
 
     private bool showed;
     private List<ButtonObj> buttonObjs = new List<ButtonObj>();
-    public void FillPanel(Sprite spr, string textKey, List<InTonnelObject> inTonnelObjects, Action onAction, Action onSkip)
+    public void FillPanel(TonnelInfo tonnelInfo)
     {
-        FillInfoPanel(spr, textKey);
-        FillTonnelObjectsPanel(inTonnelObjects);
+        FillInfoPanel(tonnelInfo.tonnelImage, tonnelInfo.tonnelText);
+        FillTonnelObjectsPanel(tonnelInfo.inTonnelObjects);
         buttonAtivatinTonnel.onClick.RemoveAllListeners();
         buttonSkipTonnel.onClick.RemoveAllListeners();
 
-        buttonAtivatinTonnel.onClick.AddListener(() => { onAction?.Invoke(); });
-        buttonSkipTonnel.onClick.AddListener(() => { onSkip?.Invoke(); });
-
-        buttonAtivatinTonnel.gameObject.SetActive(true);
-        buttonSkipTonnel.gameObject.SetActive(true);
-    }
-
-    public void FillPanel(Sprite spr, string textKey, List<InTonnelObject> inTonnelObjects, Action onAction)
-    {
-        FillInfoPanel(spr, textKey);
-        FillTonnelObjectsPanel(inTonnelObjects);
-
-        buttonAtivatinTonnel.onClick.RemoveAllListeners();
-        buttonSkipTonnel.onClick.RemoveAllListeners();
-
-        buttonAtivatinTonnel.onClick.AddListener(() => { onAction?.Invoke(); });
-
-        buttonAtivatinTonnel.gameObject.SetActive(true);
-        buttonSkipTonnel.gameObject.SetActive(false);
-    }
-
-    public void FillPanel(Sprite spr, string textKey, List<InTonnelObject> inTonnelObjects)
-    {
-        FillInfoPanel(spr, textKey);
-        FillTonnelObjectsPanel(inTonnelObjects);
         buttonAtivatinTonnel.gameObject.SetActive(false);
         buttonSkipTonnel.gameObject.SetActive(false);
+
+        if (tonnelInfo.ActivteTonnel != null)
+        {
+            buttonAtivatinTonnel.onClick.AddListener(() => { tonnelInfo.ActivteTonnel?.Invoke(); });
+            buttonAtivatinTonnel.gameObject.SetActive(true);
+        }
+        if (tonnelInfo.SkipTonnel != null)
+        {
+            buttonSkipTonnel.onClick.AddListener(() => { tonnelInfo.SkipTonnel?.Invoke(); });
+            buttonSkipTonnel.gameObject.SetActive(true);
+        }
+        
     }
 
     private void FillInfoPanel(Sprite spr, string textKey)

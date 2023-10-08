@@ -229,18 +229,18 @@ MonoBehaviour:
   tonnelType: 10
   placeForPlayerStep: {fileID: 0}
   actionSteps:
-  - tommelImage: {fileID: 0}
-    textKey: Tonnel_Enemy_0_0
+  - tonnelImage: {fileID: 0}
+    textKey: Tonnel_GotMoney_0_0
     positionToJump: {fileID: 5503176641384423632}
     positionForCamera: {fileID: 1261685833214798667}
     animator: {fileID: 0}
     animTrigger: 
     enemy: {fileID: 7441565486816372843}
     giveItem: {fileID: 0}
-    needButtonContinue: 1
     needButtonSkip: 1
     addNewObj: []
     removeObj: []
+  number_step: 0
   actionStarted: 0
   tonnelObjects: []
 --- !u!1 &8073028881776499940

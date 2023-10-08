@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
     public List<Item> allJunkInGame = new List<Item>();
     public int coutnPlayerGold => storyController.playerGoldCount;
 
+    private Stack<TonnelInfo> tonnelInfoStack = new Stack<TonnelInfo>();
+
     private void Awake()
     {
     }
@@ -82,11 +84,21 @@ public class GameManager : MonoBehaviour
         newTonnel.PlayerIsCome(character);
     }
 
+    public  void AddTonnelInfoInSteck(TonnelInfo tonnelInfo)
+    {
+        tonnelInfoStack.Push(tonnelInfo);
+    }
+
+    public void ShowTonnelInfosStack()
+    {
+        if(tonnelInfoStack.Count>0)
+            UiController.Inst.ShowTonnelInfo(tonnelInfoStack.Pop());
+    }
+
     public TonnelType GetNextRoom()
     {
         int rand = UnityEngine.Random.Range(0, ((int)TonnelType.NumOf));
         return (TonnelType)Enum.GetValues(typeof(TonnelType)).GetValue(rand);
     }
-
 
 }

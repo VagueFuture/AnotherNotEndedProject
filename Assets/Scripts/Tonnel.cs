@@ -13,7 +13,7 @@ public class Tonnel : MonoBehaviour
     public Action SpawnEnded;
 
     public List<ActionSteps> actionSteps = new List<ActionSteps>();
-    protected int number_step = 0;
+    public int number_step = 0;
 
     protected IEnumerator corr = null;
     protected bool jumpEnded = true, showEnded = true;
@@ -29,7 +29,7 @@ public class Tonnel : MonoBehaviour
 
     public virtual void PlayerIsCome(Character player)
     {
-        DoActionStep(0);
+        DoActionStep(number_step);
         AttachActions();
         this.player = player;
     }
@@ -77,10 +77,12 @@ public class Tonnel : MonoBehaviour
         {
             ActionSteps step = actionSteps[number];
 
-            GameManager.Inst.character.JumpInTonnel(step.positionToJump.position);
+            if (number != 0)
+                if (step.positionToJump != null)
+                    GameManager.Inst.character.JumpInTonnel(step.positionToJump);
 
             if (step.positionForCamera != null)
-                GameManager.Inst.cameraManager.MoveCameraToPosition(step.positionForCamera, () => { step.DoStep(this,player); });
+                GameManager.Inst.cameraManager.MoveCameraToPosition(step.positionForCamera, () => { step.DoStep(this, player); });
             else
                 step.DoStep(this, player);
         }
@@ -119,89 +121,96 @@ public class Tonnel : MonoBehaviour
         GameManager.Inst.OnCharacterFinishTonnel?.Invoke(this);
     }
 
-    public void ShowInfo(Sprite tonnelImage, string key, List<InTonnelObject> inTonnelObjects, Action ActionOnTonnel, Action SkipTonnel)
-    {
-        UiController.Inst.ShowTonnelInfo(tonnelImage, key, inTonnelObjects, ActionOnTonnel, SkipTonnel);
-    }
-
-    public void ShowInfo(Sprite tonnelImage, string key, List<InTonnelObject> inTonnelObjects, Action ActionOnTonnel)
-    {
-        UiController.Inst.ShowTonnelInfo(tonnelImage, key, inTonnelObjects, ActionOnTonnel);
-    }
-
-    public void ShowInfo(Sprite tonnelImage, string key, List<InTonnelObject> inTonnelObjects)
-    {
-        UiController.Inst.ShowTonnelInfo(tonnelImage, key, inTonnelObjects);
-    }
-
     public void AddTonnelObject(InTonnelObject newObj)
     {
         tonnelObjects.Add(newObj);
+    }
+
+    public void SetEnemy(Enemy enemy, Tonnel tonnel, Character player)
+    {
+        if (enemy == null) return;
+
+        TonnelInfo tonnelInfo = enemy.Init();
+        tonnelInfo.ActivteTonnel = () =>
+        {
+            InitFightMode(enemy, tonnel, player, GameManager.Inst.ShowTonnelInfosStack);
+        };
+        tonnelInfo.SkipTonnel = () =>
+        {
+            GameManager.Inst.ShowTonnelInfosStack();
+        };
+
+        GameManager.Inst.AddTonnelInfoInSteck(tonnelInfo);
+    }
+
+    private void InitFightMode(Enemy enemy, Tonnel tonnel, Character player, Action onFightEnd)
+    {
+        FightMode.Inst.InitFightMode(tonnel, onFightEnd);
+        UiController.Inst.panelTonnelInfo.Hide();
+        FightMode.Inst.Fight(player.controller, enemy.controller);
     }
 }
 
 [System.Serializable]
 public class ActionSteps
 {
-    public Sprite tommelImage;
+    public Sprite tonnelImage;
     public string textKey = "none";
     public Transform positionToJump, positionForCamera;
     public Animator animator;
     public string animTrigger = "Show";
+    public CustomAction customAction;
     public Enemy enemy;
     public Item giveItem;
-    public bool needButtonContinue, needButtonSkip;
+    public bool needButtonSkip;
     public List<InTonnelObject> addNewObj = new List<InTonnelObject>();
     public List<InTonnelObject> removeObj = new List<InTonnelObject>();
 
     public void DoStep(Tonnel tonnel, Character player)
     {
-        Action enemyForward = null;
+        PushTonnelInfo(tonnel);
+
         ShowAnimation();
-        List<InTonnelObject> tonnelObjects = GetTonnelObjects(tonnel.tonnelObjects);
 
+        GiveItem();
 
-        if (giveItem != null)
-            GiveItem();
+        DoCustonAction(tonnel, player);
 
-        if (enemy != null)
-        {
-            enemyForward = () =>
-            {
-                enemy.GenerateEquip();
-                FightMode.Inst.InitFightMode(tonnel, () => { enemy = null; });
-                UiController.Inst.panelTonnelInfo.Hide();
-                FightMode.Inst.Fight(player.controller, enemy.controller);
-            };
-            tonnel.ShowInfo(tommelImage, textKey, tonnelObjects, () => { enemyForward?.Invoke(); }, () => { tonnel.SkipTonnel(); });
-            return;
-        }
+        tonnel.SetEnemy(enemy, tonnel, player);
 
-
-        if (needButtonContinue && needButtonSkip)
-        {
-            tonnel.actionStarted = false;
-            tonnel.ShowInfo(tommelImage, textKey, tonnelObjects, () => { tonnel.ActionOnTonnel(); enemyForward?.Invoke(); }, () => { tonnel.SkipTonnel(); });
-        }
-        else
-        if (needButtonContinue)
-        {
-            tonnel.actionStarted = false;
-            tonnel.ShowInfo(tommelImage, textKey, tonnelObjects, () => { tonnel.ActionOnTonnel(); enemyForward?.Invoke(); });
-        }
-        else
-        {
-            tonnel.ShowInfo(tommelImage, textKey, tonnelObjects);
-        }
+        GameManager.Inst.ShowTonnelInfosStack();
     }
 
-    public void ShowAnimation()
+    public void PushTonnelInfo(Tonnel tonnel)
+    {
+        TonnelInfo tonnelInfo = new TonnelInfo()
+        {
+            tonnelImage = this.tonnelImage,
+            tonnelText = this.textKey
+        };
+        List<InTonnelObject> tonnelObjects = GetTonnelObjects(tonnel.tonnelObjects);
+        tonnelInfo.inTonnelObjects = tonnelObjects;
+
+        if (tonnel.number_step <= tonnel.actionSteps.Count)
+            tonnelInfo.ActivteTonnel = () =>
+            {
+                tonnel.ActionOnTonnel();
+                UiController.Inst.panelTonnelInfo.Hide();
+            };
+
+        if (needButtonSkip)
+            tonnelInfo.SkipTonnel = tonnel.SkipTonnel;
+
+        GameManager.Inst.AddTonnelInfoInSteck(tonnelInfo);
+    }
+
+    private void ShowAnimation()
     {
         if (animator != null)
             animator.SetTrigger(animTrigger);
     }
 
-    public List<InTonnelObject> GetTonnelObjects(List<InTonnelObject> haveObjects)
+    private List<InTonnelObject> GetTonnelObjects(List<InTonnelObject> haveObjects)
     {
         List<InTonnelObject> result = new List<InTonnelObject>(haveObjects);
         foreach (var obj in addNewObj)
@@ -218,8 +227,16 @@ public class ActionSteps
         return result;
     }
 
-    public void GiveItem()
+    private void GiveItem()
     {
-        UiController.Inst.playerInventory.AddItemToInventory(giveItem);
+        if (giveItem != null)
+            UiController.Inst.playerInventory.AddItemToInventory(giveItem);
+    }
+
+    private void DoCustonAction(Tonnel tonnel, Character player)
+    {
+        if (customAction == null) return;
+        TonnelInfo tonnelInfo = customAction.Init(tonnel, player, GameManager.Inst.ShowTonnelInfosStack);
+        GameManager.Inst.AddTonnelInfoInSteck(tonnelInfo);
     }
 }

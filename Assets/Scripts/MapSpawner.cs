@@ -28,10 +28,11 @@ public class MapSpawner : MonoBehaviour
     {
         TonnelType type = GameManager.Inst.GetNextRoom();
         type = UnityEngine.Random.Range(0,5) == 0? TonnelType.ThroughTunnel : TonnelType.Shop;
-        type = UnityEngine.Random.Range(0, 2) == 0 ? TonnelType.Enemy : type;
+        type = UnityEngine.Random.Range(0, 5) == 0 ? TonnelType.Enemy : type;
         type = UnityEngine.Random.Range(0, 50) == 25 ? TonnelType.Karcer : type;
         type = UnityEngine.Random.Range(0, 10) == 0 ? TonnelType.Medic: type;
-        type = TonnelType.Graves;
+        type = UnityEngine.Random.Range(0, 10) == 0 ? TonnelType.Graves : type;
+
         SpawnTonnel(type);
     }
 

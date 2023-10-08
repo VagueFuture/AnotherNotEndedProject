@@ -34,10 +34,11 @@ public class Character : MonoBehaviour
 
     }
 
-    public void JumpInTonnel(Vector3 position)
+    public void JumpInTonnel(Transform position)
     {
-        transform.DOJump(position, 0.5f, 1, 1)
+        transform.DOJump(position.position, 0.5f, 1, 1)
             .OnComplete(() => { GameManager.Inst.OnCharacterJumpInPosition?.Invoke(this); });
+        transform.DORotate(position.rotation.eulerAngles, 1);
     }
 
     public void JumpToTonnel(Tonnel target)

@@ -172,6 +172,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2fde20abac590a4199690a1802dc2b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: d5c715fd0a6e75b488570fc5d89d74ef, type: 3}
+  textKey: Tonnel_Enemy_0_0
   controller: {fileID: -5643392563246075735}
 --- !u!95 &3254996319955589464
 Animator:

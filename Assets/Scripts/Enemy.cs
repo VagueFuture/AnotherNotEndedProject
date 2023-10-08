@@ -4,7 +4,20 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private Sprite sprite;
+    [SerializeField] private string textKey;
     public MyCharacterController controller;
+
+    public TonnelInfo Init()
+    {
+        GenerateEquip();
+        TonnelInfo tonnelInfo = new TonnelInfo()
+        {
+            tonnelImage = sprite,
+            tonnelText = textKey
+        };
+        return tonnelInfo;
+    }
 
     public void GenerateEquip()
     {

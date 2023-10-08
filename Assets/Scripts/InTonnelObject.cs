@@ -6,9 +6,11 @@ public class InTonnelObject : MonoBehaviour
 {
     public Tonnel parentTonnel;
     public TonnelObject myObject;
-
+    public bool spawnOnStart = true; 
     private void Start()
     {
+        if (!spawnOnStart) return;
+
         int r = Random.Range(0, 2);
         if(r == 1)
         {

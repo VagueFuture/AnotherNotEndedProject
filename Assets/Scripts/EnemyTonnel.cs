@@ -34,8 +34,5 @@ public class EnemyTonnel : Tonnel
     public override void SkipTonnel()
     {
         base.SkipTonnel();
-        /*float r = Random.Range(0, enemy.controller.stats.strength);
-        player.controller.GetDamage(r);
-        enemy.controller.Attak();*/
     }
 }

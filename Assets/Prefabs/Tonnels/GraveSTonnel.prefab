@@ -68,66 +68,67 @@ MonoBehaviour:
   tonnelType: 11
   placeForPlayerStep: {fileID: 0}
   actionSteps:
-  - tommelImage: {fileID: 0}
-    textKey: 
+  - tonnelImage: {fileID: 0}
+    textKey: Tonnel_Grave_0_0
     positionToJump: {fileID: 3101259309096127018}
     positionForCamera: {fileID: 0}
     animator: {fileID: 0}
     animTrigger: 
+    customAction: {fileID: 0}
     enemy: {fileID: 0}
     giveItem: {fileID: 0}
-    needButtonContinue: 1
     needButtonSkip: 1
     addNewObj: []
     removeObj: []
-  - tommelImage: {fileID: 0}
-    textKey: 
+  - tonnelImage: {fileID: 0}
+    textKey: Tonnel_Grave_0_0
     positionToJump: {fileID: 704774289901282977}
     positionForCamera: {fileID: 8562679357612966321}
-    animator: {fileID: 6678705422050453571}
-    animTrigger: ShowCoffin
-    enemy: {fileID: 8141934810405665324}
+    animator: {fileID: 0}
+    animTrigger: 
+    customAction: {fileID: 6331733450785278529}
+    enemy: {fileID: 0}
     giveItem: {fileID: 0}
-    needButtonContinue: 1
     needButtonSkip: 1
     addNewObj: []
     removeObj: []
-  - tommelImage: {fileID: 0}
-    textKey: 
+  - tonnelImage: {fileID: 0}
+    textKey: Tonnel_Grave_0_0
     positionToJump: {fileID: 7149390217147486658}
     positionForCamera: {fileID: 2027991457197536978}
-    animator: {fileID: 3918105065286836000}
-    animTrigger: ShowCoffin
-    enemy: {fileID: 1877322010540084559}
+    animator: {fileID: 0}
+    animTrigger: 
+    customAction: {fileID: 4408662264653921570}
+    enemy: {fileID: 0}
     giveItem: {fileID: 0}
-    needButtonContinue: 1
     needButtonSkip: 1
     addNewObj: []
     removeObj: []
-  - tommelImage: {fileID: 0}
-    textKey: 
+  - tonnelImage: {fileID: 0}
+    textKey: Tonnel_Grave_0_0
     positionToJump: {fileID: 5836627999941346844}
     positionForCamera: {fileID: 3453343665121517836}
-    animator: {fileID: 402937426046372094}
-    animTrigger: ShowCoffin
-    enemy: {fileID: 3010081117545126545}
+    animator: {fileID: 0}
+    animTrigger: 
+    customAction: {fileID: 1073778935612664572}
+    enemy: {fileID: 0}
     giveItem: {fileID: 0}
-    needButtonContinue: 1
     needButtonSkip: 1
     addNewObj: []
     removeObj: []
-  - tommelImage: {fileID: 0}
-    textKey: 
+  - tonnelImage: {fileID: 0}
+    textKey: Tonnel_Grave_0_0
     positionToJump: {fileID: 4981033426772121386}
     positionForCamera: {fileID: 4193779770811150394}
-    animator: {fileID: 1173316119997929928}
-    animTrigger: ShowCoffin
-    enemy: {fileID: 4330779949391694759}
+    animator: {fileID: 0}
+    animTrigger: 
+    customAction: {fileID: 1961640892393487306}
+    enemy: {fileID: 0}
     giveItem: {fileID: 0}
-    needButtonContinue: 0
     needButtonSkip: 1
     addNewObj: []
     removeObj: []
+  number_step: 0
   actionStarted: 0
   tonnelObjects: []
 --- !u!1 &1684346159054698014
@@ -545,20 +546,15 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3545957508681230001, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
   m_PrefabInstance: {fileID: 960626068110916429}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &402937426046372094 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 631437596371678131, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
-  m_PrefabInstance: {fileID: 960626068110916429}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3010081117545126545 stripped
+--- !u!114 &1073778935612664572 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2634923015608492508, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
+  m_CorrespondingSourceObject: {fileID: 266275401113162161, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
   m_PrefabInstance: {fileID: 960626068110916429}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2fde20abac590a4199690a1802dc2b7, type: 3}
+  m_Script: {fileID: 11500000, guid: 903205f10f50aa843a10f177e8c10153, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &5836627999941346844 stripped
@@ -633,20 +629,15 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3545957508681230001, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
   m_PrefabInstance: {fileID: 1768548985225095803}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &1173316119997929928 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 631437596371678131, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
-  m_PrefabInstance: {fileID: 1768548985225095803}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4330779949391694759 stripped
+--- !u!114 &1961640892393487306 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2634923015608492508, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
+  m_CorrespondingSourceObject: {fileID: 266275401113162161, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
   m_PrefabInstance: {fileID: 1768548985225095803}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2fde20abac590a4199690a1802dc2b7, type: 3}
+  m_Script: {fileID: 11500000, guid: 903205f10f50aa843a10f177e8c10153, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &4193779770811150394 stripped
@@ -716,15 +707,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
---- !u!114 &1877322010540084559 stripped
+--- !u!4 &1128560143568013858 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3545957508681230001, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
+  m_PrefabInstance: {fileID: 4511682041726364819}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4408662264653921570 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2634923015608492508, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
+  m_CorrespondingSourceObject: {fileID: 266275401113162161, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
   m_PrefabInstance: {fileID: 4511682041726364819}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2fde20abac590a4199690a1802dc2b7, type: 3}
+  m_Script: {fileID: 11500000, guid: 903205f10f50aa843a10f177e8c10153, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &7149390217147486658 stripped
@@ -735,16 +731,6 @@ Transform:
 --- !u!4 &2027991457197536978 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2501865685724092993, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
-  m_PrefabInstance: {fileID: 4511682041726364819}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1128560143568013858 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3545957508681230001, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
-  m_PrefabInstance: {fileID: 4511682041726364819}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &3918105065286836000 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 631437596371678131, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
   m_PrefabInstance: {fileID: 4511682041726364819}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6083472594387180528
@@ -804,20 +790,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
---- !u!95 &6678705422050453571 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 631437596371678131, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
+--- !u!4 &7302889740508298561 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3545957508681230001, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
   m_PrefabInstance: {fileID: 6083472594387180528}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8141934810405665324 stripped
+--- !u!114 &6331733450785278529 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2634923015608492508, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
+  m_CorrespondingSourceObject: {fileID: 266275401113162161, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
   m_PrefabInstance: {fileID: 6083472594387180528}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2fde20abac590a4199690a1802dc2b7, type: 3}
+  m_Script: {fileID: 11500000, guid: 903205f10f50aa843a10f177e8c10153, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &704774289901282977 stripped
@@ -828,10 +814,5 @@ Transform:
 --- !u!4 &8562679357612966321 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2501865685724092993, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
-  m_PrefabInstance: {fileID: 6083472594387180528}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &7302889740508298561 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3545957508681230001, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
   m_PrefabInstance: {fileID: 6083472594387180528}
   m_PrefabAsset: {fileID: 0}
