@@ -29,11 +29,10 @@ public class GameItemGenerator
             imageOnInventory = original.imageOnInventory,
             typeItem = original.typeItem,
             tredeStatus = TredeStatus.PlayerOwner,
-            Price = original.Price,
             modelTypePrefub = original.modelTypePrefub,
             effect = original.effect
         };
-        float r = Random.Range(1, original.effect.effectCount);
+        float r = Random.Range(1, 60);
         item.effect.effectCount = (int)r;
         item.Price = (int)r;
         return item;

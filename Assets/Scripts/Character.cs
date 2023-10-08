@@ -45,6 +45,7 @@ public class Character : MonoBehaviour
     {
         transform.DOJump(target.placeForPlayerStep.position, 0.5f, 1, 1)
             .OnComplete(() => { GameManager.Inst.OnCharacterComeInTonnel?.Invoke(target, this); });
+        transform.DORotate(target.placeForPlayerStep.rotation.eulerAngles, 1);
     }
 
 }
