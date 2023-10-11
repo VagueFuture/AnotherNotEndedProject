@@ -12,5 +12,6 @@ public enum TonnelType
     DoubleTonnel,
     Enemy,
     Graves,
+    Traps,
     NumOf
 }
