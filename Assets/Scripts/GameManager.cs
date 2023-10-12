@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
     public Action<Item> OnItemInInventory;
     public Action<Item> OnItemRemoveFromInventory;
     public Action<Item,Inventory.PlaceType> OnItemEquiped;
+    public Action<List<Tonnel>> OnTonnelInThisLvlUpdate;
+
 
     public List<Item> allTypeWeaponInGame = new List<Item>();
     public List<Item> allTypeKeysInGame = new List<Item>();
@@ -52,6 +54,12 @@ public class GameManager : MonoBehaviour
         OnCharacterComeInTonnel += CharacterComeInTonnel;
         OnStatsUpdate += UiController.Inst.panelStatsInfo.FillData;
         OnCharacterFinishTonnel += CharacterFinishTonnel;
+        OnTonnelInThisLvlUpdate += TonnelInThisLvlUpdate;
+    }
+
+    private void TonnelInThisLvlUpdate(List<Tonnel> tonnels)
+    {
+        UiController.Inst.panelHaveTonnels.ShowTonnelButtons(tonnels);
     }
 
     public List<Item> GetAllGameItems()

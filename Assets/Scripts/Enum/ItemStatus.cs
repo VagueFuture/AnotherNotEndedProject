@@ -11,5 +11,7 @@ public enum EffectStatus
     MaxHPBuff,
     GetGold,
     BuffAgulity,
-    BuffCrit
+    BuffCrit,
+    BuffCritChance,
+    BuffVision
 }

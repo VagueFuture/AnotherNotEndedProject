@@ -12,7 +12,7 @@ public class LootMode : MonoBehaviour
     {
         lootHolders.Clear();
     }
-    public void Init(Inventory lootBoxInventory, TonnelObject obj)
+    public void Init(Inventory lootBoxInventory, TonnelObjectLooted obj)
     {
         this.activObject = obj;
         this.lootBoxInventory = lootBoxInventory;
@@ -21,7 +21,7 @@ public class LootMode : MonoBehaviour
 
         if (!lootHolders.ContainsKey(obj))
         {
-            GenerateLoot();
+            GenerateLoot(obj);
             lootHolders.Add(obj, this.lootBoxInventory.GetItemsFromInventory());
         }
         else
@@ -37,10 +37,10 @@ public class LootMode : MonoBehaviour
         lootBoxInventory.UpdateInventory();
     }
 
-    private void GenerateLoot()
+    private void GenerateLoot(TonnelObjectLooted lootedObj)
     {
-        List<Item> items = GameManager.Inst.GetGameItemsForLoot();
-        int countItemsInBox = UnityEngine.Random.Range(0,7);
+        List<Item> items = lootedObj.ItemsCanSpawnedInside;
+        int countItemsInBox = UnityEngine.Random.Range(0, lootedObj.count+1);
         UnityEngine.Random.Range(1, countItemsInBox);
         for (int i = 0; i < countItemsInBox; i++)
         {

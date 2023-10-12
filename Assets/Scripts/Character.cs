@@ -67,10 +67,12 @@ public class Stats
                 health = maxHealth;
         }
     }
+
     public float strength = 1;
     public float defendce = 1;
     public float luck = 0;
     public float agility = 0;
     public float critChance = 1;
     public float critPercent = 1.5f;
+    public int vision = 2;
 }

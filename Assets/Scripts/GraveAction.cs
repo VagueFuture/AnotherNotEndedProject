@@ -26,6 +26,7 @@ public class GraveAction : CustomAction
         {
             myAnimator.SetTrigger("coffin");
             tonnelOwner.AddTonnelObject(coffin);
+            UiController.Inst.lootingPanel.ShowPanel((TonnelObjectLooted)coffin.myObject);
         }
         onEnd?.Invoke();
     }

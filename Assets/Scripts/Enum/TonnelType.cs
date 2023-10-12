@@ -13,5 +13,6 @@ public enum TonnelType
     Enemy,
     Graves,
     Traps,
+    Stairs,
     NumOf
 }

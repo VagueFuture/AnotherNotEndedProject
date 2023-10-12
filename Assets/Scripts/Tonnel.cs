@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class Tonnel : MonoBehaviour
 {
     public TonnelType tonnelType;
-    [HideInInspector]
-    public Transform placeForPlayerStep;
+    public Sprite tonnelImage;
+    [HideInInspector] public Transform placeForPlayerStep;
 
     public Action SpawnEnded;
 
@@ -137,6 +137,7 @@ public class Tonnel : MonoBehaviour
         };
         tonnelInfo.SkipTonnel = () =>
         {
+            GameManager.Inst.character.controller.stats.Health -= UnityEngine.Random.Range(0, GameManager.Inst.storyController.countRoom);
             GameManager.Inst.ShowTonnelInfosStack();
         };
 

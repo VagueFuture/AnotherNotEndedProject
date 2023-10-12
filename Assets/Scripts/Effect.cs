@@ -29,6 +29,12 @@ public class Effect
             case EffectStatus.BuffCrit:
                 character.stats.critPercent += (float)effectCount / 10;
                 break;
+            case EffectStatus.BuffCritChance:
+                character.stats.critChance += (float)effectCount / 10;
+                break;
+            case EffectStatus.BuffVision:
+                character.stats.vision += effectCount;
+                break;
         }
     }
 
@@ -50,6 +56,12 @@ public class Effect
                 break;
             case EffectStatus.BuffCrit:
                 character.stats.critPercent -= (float)effectCount / 10;
+                break;
+            case EffectStatus.BuffCritChance:
+                character.stats.critChance -= (float)effectCount / 10;
+                break;
+            case EffectStatus.BuffVision:
+                character.stats.vision -= effectCount;
                 break;
         }
     }

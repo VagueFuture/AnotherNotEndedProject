@@ -36,17 +36,20 @@ public class UiController : MonoBehaviour
 
     public Inventory playerInventory;
 
+    public PanelHaveTonnels panelHaveTonnels;
+
     public void OnPressButtonForward()
     {
         panelTonnelInfo.Hide();
         lootingPanel.ResetLoot();
-        MapSpawner.instance.SpawnTonnelForward();
+        //MapSpawner.instance.SpawnTonnelForward();
         buttonForward.SetActive(false);
     }
 
     public void NextRoomAccess()
     {
         buttonForward.SetActive(true);
+        panelHaveTonnels.ShowPanel();
         panelTonnelInfo.Hide();
     }
 
@@ -170,7 +173,8 @@ public class PanelTonnelInfo
                 buttonObjs.Add(newButton);
                 newButton.button.onClick.AddListener(() =>
                 {
-                    UiController.Inst.lootingPanel.ShowPanel(tonnelObj.myObject);
+                    if(tonnelObj.myObject is TonnelObjectLooted)
+                        UiController.Inst.lootingPanel.ShowPanel((TonnelObjectLooted)tonnelObj.myObject);
                 });
             }
         }
@@ -449,7 +453,7 @@ public class LootingPanel
     public GameObject panelSelf;
     private LootMode lootMode = new LootMode();
 
-    public void ShowPanel(TonnelObject obj)
+    public void ShowPanel(TonnelObjectLooted obj)
     {
         lootMode.Init(lootingCells, obj);
         open = true;
@@ -483,5 +487,54 @@ public class UiStoryController
     {
         this.endRoomCount.text = endRoomCount + "";
         this.goldCount.text = goldCount + "";
+    }
+}
+[System.Serializable]
+public class PanelHaveTonnels
+{
+    [SerializeField] private GameObject panelSelf;
+    [SerializeField] private BtnSelectionTonnel btnPrefab;
+    [SerializeField] private Transform content;
+    List<BtnSelectionTonnel> btnSelectionTonnels = new List<BtnSelectionTonnel>();
+
+    public void ShowPanel()
+    {
+        panelSelf.SetActive(true);
+    }
+
+    public void HidePanel()
+    {
+        panelSelf.SetActive(false);
+    }
+
+    public void ShowTonnelButtons(List<Tonnel> tonnels)
+    {
+        DropAllButtons();
+        tonnels.Reverse();
+        int visibleSost = GameManager.Inst.character.controller.stats.vision;
+        int j = 0;
+        foreach(var tonnel in tonnels)
+        {
+            if (j >= visibleSost)
+                break;
+            BtnSelectionTonnel btn = GameObject.Instantiate(btnPrefab, content);
+            btn.Init(tonnel, ClickOnButton);
+            btnSelectionTonnels.Add(btn);
+            j++;
+        }
+    }
+
+    private void DropAllButtons()
+    {
+        foreach (var btn in btnSelectionTonnels)
+            GameObject.Destroy(btn.gameObject);
+
+        btnSelectionTonnels.Clear();
+    }
+
+    private void ClickOnButton(Tonnel tonnel)
+    {
+        MapSpawner.instance.SpawnTonnelForward(tonnel);
+        HidePanel();
     }
 }

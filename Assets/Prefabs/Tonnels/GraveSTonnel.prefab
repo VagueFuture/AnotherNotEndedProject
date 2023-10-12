@@ -66,6 +66,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tonnelType: 11
+  tonnelImage: {fileID: 0}
   placeForPlayerStep: {fileID: 0}
   actionSteps:
   - tonnelImage: {fileID: 0}
@@ -535,6 +536,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 3947691545400306586, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
+      propertyPath: myObject
+      value: 
+      objectReference: {fileID: 11400000, guid: c68aab426023af8498ea1da73ab484d6, type: 2}
     - target: {fileID: 3986984680668115417, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
       propertyPath: m_Name
       value: Grave (2)
@@ -618,6 +623,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 3947691545400306586, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
+      propertyPath: myObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 567c02815af340b4d8b3e108c22bfc3d, type: 2}
     - target: {fileID: 3986984680668115417, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
       propertyPath: m_Name
       value: Grave (3)
@@ -701,6 +710,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3947691545400306586, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
+      propertyPath: myObject
+      value: 
+      objectReference: {fileID: 11400000, guid: e304a19d1a91f2c4cbaab0c9a8d484de, type: 2}
     - target: {fileID: 3986984680668115417, guid: 2e98174de26bae44db9216387e720ce7, type: 3}
       propertyPath: m_Name
       value: Grave (1)

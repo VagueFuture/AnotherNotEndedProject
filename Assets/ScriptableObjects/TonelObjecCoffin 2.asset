@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18ef121228c0b3440a7b35a16b5f14cf, type: 3}
-  m_Name: TonelObjectLootBox 2
+  m_Name: TonelObjecCoffin 2
   m_EditorClassIdentifier: 
   objSprite: {fileID: 21300000, guid: 8099f20500b6fd44cb0d980743de02de, type: 3}
   objectType: 1
-  count: 6
+  count: 1
   ItemsCanSpawnedInside:
   - {fileID: 11400000, guid: 5cb63f5338cee114889ea5e9cd40f3e1, type: 2}
-  - {fileID: 11400000, guid: d22f94e17bace494f8f93ab3fdab97c5, type: 2}
-  - {fileID: 11400000, guid: 2c62dc2610c7fd841830a2d36281085a, type: 2}
+  - {fileID: 11400000, guid: 07f263b1b0ef49d469f7968a6a18e79f, type: 2}
+  - {fileID: 11400000, guid: 8fa300cf9cd764d4ba29eb68ff0d2a79, type: 2}
+  - {fileID: 11400000, guid: 6d8c40fd512fda646995321b900192b7, type: 2}

@@ -45,6 +45,8 @@ public class GameItemGenerator
         weaponStatusEffects.Add(EffectStatus.MaxHPBuff);
         weaponStatusEffects.Add(EffectStatus.BuffAgulity);
         weaponStatusEffects.Add(EffectStatus.BuffCrit);
+        weaponStatusEffects.Add(EffectStatus.BuffCritChance);
+        weaponStatusEffects.Add(EffectStatus.BuffVision);
 
         ItemWeapon item = new ItemWeapon()
         {
@@ -54,12 +56,13 @@ public class GameItemGenerator
             Price = original.Price,
             modelTypePrefub = original.modelTypePrefub
         };
+        int countRoom = GameManager.Inst.storyController.countRoom;
         int r = Random.Range(0, weaponStatusEffects.Count);
         item.magickEffect = new Effect();
         item.magickEffect.status = weaponStatusEffects[r];
-        item.magickEffect.effectCount = Random.Range(1, 10);
+        item.magickEffect.effectCount = Random.Range(1, (int)(countRoom%10));
 
-        int countRoom = GameManager.Inst.storyController.countRoom;
+        
         float delta = Random.Range(-90, 100);
         float damage = countRoom + countRoom * (delta / 100);
         delta = Random.Range(-90, 100);
