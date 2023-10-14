@@ -18,23 +18,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private TonnelType region = TonnelType.NumOf;
     public Character character;
     public CameraManager cameraManager;
     public StoryController storyController;
+    public RuneChecker runeChecker;
     public GameItemGenerator gameItemGenerator = new GameItemGenerator();
     public Action<Stats> OnStatsUpdate;
     public Action<Tonnel> OnTonnelSpawned;
-    public Action<Tonnel,Character> OnCharacterComeInTonnel;
+    public Action<Tonnel, Character> OnCharacterComeInTonnel;
     public Action<Tonnel> OnCharacterFinishTonnel;
     public Action<Character> OnCharacterJumpInPosition;
     public Action TonnelInfoShowed;
     public Action OnScreenPress;
     public Action<Item> OnItemInInventory;
     public Action<Item> OnItemRemoveFromInventory;
-    public Action<Item,Inventory.PlaceType> OnItemEquiped;
+    public Action<Item, Inventory.PlaceType> OnItemEquiped;
     public Action<List<Tonnel>> OnTonnelInThisLvlUpdate;
 
+    public Action<List<DirectRecord>> OnDragRuneEnd;
 
     public List<Item> allTypeWeaponInGame = new List<Item>();
     public List<Item> allTypeKeysInGame = new List<Item>();
@@ -52,7 +53,8 @@ public class GameManager : MonoBehaviour
     {
         DialogSystem.GetText();
         OnCharacterComeInTonnel += CharacterComeInTonnel;
-        OnStatsUpdate += UiController.Inst.panelStatsInfo.FillData;
+        if (UiController.Inst != null)
+            OnStatsUpdate += UiController.Inst.panelStatsInfo.FillData;
         OnCharacterFinishTonnel += CharacterFinishTonnel;
         OnTonnelInThisLvlUpdate += TonnelInThisLvlUpdate;
     }
@@ -92,14 +94,14 @@ public class GameManager : MonoBehaviour
         newTonnel.PlayerIsCome(character);
     }
 
-    public  void AddTonnelInfoInSteck(TonnelInfo tonnelInfo)
+    public void AddTonnelInfoInSteck(TonnelInfo tonnelInfo)
     {
         tonnelInfoStack.Push(tonnelInfo);
     }
 
     public void ShowTonnelInfosStack()
     {
-        if(tonnelInfoStack.Count>0)
+        if (tonnelInfoStack.Count > 0)
             UiController.Inst.ShowTonnelInfo(tonnelInfoStack.Pop());
     }
 

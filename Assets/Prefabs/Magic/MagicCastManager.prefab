@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1579878161090343497
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1579878161090343503}
+  - component: {fileID: 1579878161090343502}
+  - component: {fileID: 1579878161090343500}
+  - component: {fileID: 1579878161090343506}
+  m_Layer: 0
+  m_Name: MagicCastManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1579878161090343503
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579878161090343497}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.0397576, y: 1.5942105, z: -0.49959278}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1579878161090343502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579878161090343497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81ca3a7daff28254e8c847f3938575e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ofsssetDirectionChange: 2
+--- !u!114 &1579878161090343500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579878161090343497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c50f26484b91945a52fe16a30628b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runes:
+  - runeDragSteps:
+    - directionType: 0
+    - directionType: 7
+    - directionType: 0
+    runeSprite: {fileID: 21300000, guid: 28132235ac6591d419852567735a1078, type: 3}
+  - runeDragSteps:
+    - directionType: 4
+    - directionType: 5
+    - directionType: 7
+    - directionType: 6
+    runeSprite: {fileID: 21300000, guid: 9349988e298822240b60d6fadc65ba61, type: 3}
+  - runeDragSteps:
+    - directionType: 0
+    - directionType: 3
+    - directionType: 0
+    - directionType: 2
+    - directionType: 0
+    runeSprite: {fileID: 21300000, guid: 9e581edc0e904f044aa1af33760b493c, type: 3}
+  - runeDragSteps:
+    - directionType: 7
+    - directionType: 6
+    - directionType: 3
+    runeSprite: {fileID: 21300000, guid: d864203558387f9449d1b60e8e9d662a, type: 3}
+  - runeDragSteps:
+    - directionType: 3
+    runeSprite: {fileID: 21300000, guid: c91032677ad69c7469dd134352c898e6, type: 3}
+  placeForSprite: {fileID: 0}
+--- !u!114 &1579878161090343506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579878161090343497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1f2d8217a67228409d9ce039b3e45df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dFC: {fileID: 1579878161090343502}
+  drowableSprite: {fileID: 8556820139112634869, guid: ed3c1dfeb535a034ba6b4371558bedeb, type: 3}
