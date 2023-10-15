@@ -112,11 +112,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: 1
   stats:
-    health: 100
+    maxHealth: 100
     strength: 1
     defendce: 1
     luck: 0
     agility: 0
+    critChance: 1
+    critPercent: 1.5
+    vision: 2
   myAnim: {fileID: 1190622395664903954}
   dead: 0
   ready: 0

@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public Character character;
     public CameraManager cameraManager;
     public StoryController storyController;
-    public RuneChecker runeChecker;
+    public MagicMode magickController;
     public GameItemGenerator gameItemGenerator = new GameItemGenerator();
     public Action<Stats> OnStatsUpdate;
     public Action<Tonnel> OnTonnelSpawned;

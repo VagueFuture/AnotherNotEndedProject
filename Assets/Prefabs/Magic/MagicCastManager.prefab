@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1579878161090343502}
   - component: {fileID: 1579878161090343500}
   - component: {fileID: 1579878161090343506}
+  - component: {fileID: 5911795549009357364}
   m_Layer: 0
   m_Name: MagicCastManager
   m_TagString: Untagged
@@ -59,33 +60,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runes:
-  - runeDragSteps:
-    - directionType: 0
-    - directionType: 7
-    - directionType: 0
-    runeSprite: {fileID: 21300000, guid: 28132235ac6591d419852567735a1078, type: 3}
-  - runeDragSteps:
-    - directionType: 4
-    - directionType: 5
-    - directionType: 7
-    - directionType: 6
-    runeSprite: {fileID: 21300000, guid: 9349988e298822240b60d6fadc65ba61, type: 3}
-  - runeDragSteps:
-    - directionType: 0
-    - directionType: 3
-    - directionType: 0
-    - directionType: 2
-    - directionType: 0
-    runeSprite: {fileID: 21300000, guid: 9e581edc0e904f044aa1af33760b493c, type: 3}
-  - runeDragSteps:
-    - directionType: 7
-    - directionType: 6
-    - directionType: 3
-    runeSprite: {fileID: 21300000, guid: d864203558387f9449d1b60e8e9d662a, type: 3}
-  - runeDragSteps:
-    - directionType: 3
-    runeSprite: {fileID: 21300000, guid: c91032677ad69c7469dd134352c898e6, type: 3}
-  placeForSprite: {fileID: 0}
+  - {fileID: 11400000, guid: bc9cbc5f44e751f4b8c6c0f3ec609ebf, type: 2}
+  - {fileID: 11400000, guid: d281b98cf9e4d4f4e8c9b45617fc3af3, type: 2}
+  - {fileID: 11400000, guid: d09cd276cc36c86409e133d6c2328360, type: 2}
+  - {fileID: 11400000, guid: 72a5f5d3162f4ef499401d23adc52eae, type: 2}
+  - {fileID: 11400000, guid: 3e79738507d211749b106915fd839f8a, type: 2}
 --- !u!114 &1579878161090343506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,3 +79,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dFC: {fileID: 1579878161090343502}
   drowableSprite: {fileID: 8556820139112634869, guid: ed3c1dfeb535a034ba6b4371558bedeb, type: 3}
+--- !u!114 &5911795549009357364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579878161090343497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85c84ff204c161f408b3e91df11d8560, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

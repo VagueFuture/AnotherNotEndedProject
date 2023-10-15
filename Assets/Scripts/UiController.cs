@@ -98,7 +98,7 @@ public class UiController : MonoBehaviour
     {
         panelShop.PressButtonTrade();
     }
-    
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -152,7 +152,7 @@ public class PanelTonnelInfo
             buttonSkipTonnel.onClick.AddListener(() => { tonnelInfo.SkipTonnel?.Invoke(); });
             buttonSkipTonnel.gameObject.SetActive(true);
         }
-        
+
     }
 
     private void FillInfoPanel(Sprite spr, string textKey)
@@ -173,7 +173,7 @@ public class PanelTonnelInfo
                 buttonObjs.Add(newButton);
                 newButton.button.onClick.AddListener(() =>
                 {
-                    if(tonnelObj.myObject is TonnelObjectLooted)
+                    if (tonnelObj.myObject is TonnelObjectLooted)
                         UiController.Inst.lootingPanel.ShowPanel((TonnelObjectLooted)tonnelObj.myObject);
                 });
             }
@@ -210,22 +210,49 @@ public class PanelTonnelInfo
 [System.Serializable]
 public class PanelFighPhase
 {
-    [SerializeField] private GameObject panelSelf;
+    [SerializeField] private GameObject panelSelf, pageBrawl, pageMagic;
+    
     [SerializeField] private Image checkCircl;
     [SerializeField] private Image victoryZone, critZone;
     [SerializeField] private Transform rotatingArrow;
     public Button brawlButton;
-    [SerializeField] Text counterText;
+    public Text counterText;
     public GameObject arrowLeftDir, arrowRightDir;
-    public void Init()
+
+    public Text magicCounterText;
+    [SerializeField] Transform runeParent;
+    [SerializeField] Image runeImage;
+    private List<Image> runesImages = new List<Image>();
+
+    public void InitBrawl()
     {
+        pageBrawl.SetActive(true);
+        pageMagic.SetActive(false);
         brawlButton.gameObject.SetActive(true);
         counterText.gameObject.SetActive(false);
         RotateArrow(0, false);
         arrowLeftDir.SetActive(false);
         arrowRightDir.SetActive(false);
     }
-    public void FillData(Vector3 winZone, Vector3 critZone, FightMode.CheckType checkType)
+
+    public void InitMagic()
+    {
+        pageMagic.SetActive(true);
+        pageBrawl.SetActive(false);
+        brawlButton.gameObject.SetActive(true);
+        magicCounterText.gameObject.SetActive(false);
+        ClearRunesImages();
+        panelSelf.SetActive(true);
+    }
+
+    private void ClearRunesImages()
+    {
+        foreach (var r in runesImages)
+            GameObject.Destroy(r.gameObject);
+        runesImages.Clear();
+    }
+
+    public void FillBrawlData(Vector3 winZone, Vector3 critZone, FightMode.CheckType checkType)
     {
         float rotation = Mathf.Lerp(0, 360, winZone.x);
         victoryZone.transform.localRotation = Quaternion.Euler(0, 0, -rotation);
@@ -249,7 +276,19 @@ public class PanelFighPhase
         {
             arrowLeftDir.SetActive(true);
         }
+    }
+
+    public void FillMagicData(List<Rune> runes)
+    {
+        ClearRunesImages();
+        foreach(var rune in runes)
+        {
+            Image newRune = GameObject.Instantiate(runeImage, runeParent).GetComponent<Image>();
+            newRune.gameObject.SetActive(true);
+            newRune.sprite = rune.runeSprite;
+            runesImages.Add(newRune);
         }
+    }
 
     public void RotateArrow(float euler, bool reverse)
     {
@@ -264,7 +303,7 @@ public class PanelFighPhase
         panelSelf.SetActive(false);
     }
 
-    public void ShowCounter(int count, Action onEnd)
+    public void ShowCounter(int count,Text counterText, Action onEnd)
     {
         counterText.transform.localScale = Vector3.zero;
         counterText.gameObject.SetActive(true);
@@ -274,7 +313,7 @@ public class PanelFighPhase
             counterText.transform.DOScale(Vector3.one, 1).OnComplete(() =>
             {
                 count--;
-                ShowCounter(count, onEnd);
+                ShowCounter(count, counterText, onEnd);
             });
         }
         else
@@ -513,7 +552,7 @@ public class PanelHaveTonnels
         tonnels.Reverse();
         int visibleSost = GameManager.Inst.character.controller.stats.vision;
         int j = 0;
-        foreach(var tonnel in tonnels)
+        foreach (var tonnel in tonnels)
         {
             if (j >= visibleSost)
                 break;

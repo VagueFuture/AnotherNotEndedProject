@@ -8,5 +8,6 @@ public enum ItemType
     Potion = 4,
     Gold = 5,
     junk = 6,
+    SpellsBook = 7,
     NumOf
 }

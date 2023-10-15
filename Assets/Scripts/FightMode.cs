@@ -3,39 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FightMode : MonoBehaviour
+public class FightMode :MonoBehaviour
 {
     public enum CheckType { Attak, Defend, Skill }
-    public enum CheckResult { Hit, Crit, Miss };
+    public enum CheckResult { Hit, Crit, MagicHit, Miss };
 
-    float percent = 0;
-    float _timer;
-    Vector2 winZone = Vector2.zero;
-    Vector2 critZone = Vector2.zero;
+    protected float _timer;
+    protected bool screenPressed, fightInited;
+    protected PanelFighPhase panelFighPhase;
+    protected CheckType checkType;
 
-    bool screenPressed;
-    bool fightEnded;
-    PanelFighPhase panelFighPhase;
-    Tonnel tonnelOwner;
-
-    IEnumerator corr = null, corrWhait = null;
+    protected IEnumerator corr = null, corrWhait = null;
 
     Action onFightEnd;
 
-    private static FightMode _Instance;
-    public static FightMode Inst
+    private void Start()
     {
-        get
-        {
-            if (_Instance == null)
-                _Instance = FindObjectOfType<FightMode>();
-            return _Instance;
-        }
+        FightModeContriller.Inst.AddFightMode(this);
     }
 
-    public void InitFightMode(Tonnel owner, Action onFightEnd)
+    public virtual void InitFightMode(Character Attacker, Action onFightEnd)
     {
-        tonnelOwner = owner;
         GameManager.Inst.OnScreenPress += OnScreenPress;
         panelFighPhase = UiController.Inst.panelFighPhase;
         this.onFightEnd = onFightEnd;
@@ -48,27 +36,23 @@ public class FightMode : MonoBehaviour
 
     public void Fight(MyCharacterController Attacker, MyCharacterController Defender)
     {
-        if(Attacker.stats.agility>=Defender.stats.agility)
+        if (!fightInited) return;
+
+        if (Attacker.stats.agility >= Defender.stats.agility)
+        {
+            checkType = Attacker.player ? CheckType.Attak : CheckType.Defend;
             Attack(Attacker, Defender, () => { Turn(Attacker, Defender); });
+        }
         else
+        {
+            checkType = Defender.player ? CheckType.Attak : CheckType.Defend;
             Attack(Defender, Attacker, () => { Turn(Defender, Attacker); });
+        }
+        fightInited = false;
     }
 
-    public void Attack(MyCharacterController Attacker, MyCharacterController Defender, Action onEnd, bool needWhaitPressButton = true)
+    public virtual void Attack(MyCharacterController Attacker, MyCharacterController Defender, Action onEnd, bool needWhaitPressButton = true)
     {
-        panelFighPhase.Init();
-        fightEnded = false;
-        float winPercent = 0;
-        float critPercent = Attacker.stats.critChance;
-        winPercent = DeffendAttackFormul(Attacker.stats.strength, Defender.stats.defendce);
-
-
-        winZone = RandomPlaceOnCircl(winPercent);
-        critZone = RandomPlaceOnCircl(critPercent);
-
-        CheckType checkType = Attacker.player ? CheckType.Attak : CheckType.Defend;
-        panelFighPhase.FillData(winZone,critZone, checkType);
-
         if (needWhaitPressButton)
         {
             panelFighPhase.brawlButton.onClick.RemoveAllListeners();
@@ -84,29 +68,9 @@ public class FightMode : MonoBehaviour
             panelFighPhase.brawlButton.gameObject.SetActive(false);
         }
     }
-
-    private void BrawlBegin(MyCharacterController Attacker, MyCharacterController Defender, CheckType checkType, Action onEnd, int time = 3)
+    
+    protected virtual void BrawlBegin(MyCharacterController Attacker, MyCharacterController Defender, CheckType checkType, Action onEnd, int time = 3)
     {
-        panelFighPhase.ShowCounter(time, () =>
-        {
-            if (corrWhait != null)
-                StopCoroutine(corrWhait);
-            corrWhait = WaitReady(Attacker, Defender, () =>
-            {
-                StartCircleCheck(checkType, Attacker.EquipedItemWeapon, onEnd);
-            });
-            StartCoroutine(corrWhait);
-        });
-    }
-
-    public void StartCircleCheck(CheckType type,ItemWeapon weapon, Action onEnd)
-    {
-        if (corr != null)
-            StopCoroutine(corr);
-
-        corr = CheckCirclCor(onEnd, weapon, type != CheckType.Attak);
-
-        StartCoroutine(corr);
     }
 
     public IEnumerator WaitReady(MyCharacterController Attacker, MyCharacterController Defender, Action onEnd)
@@ -117,37 +81,9 @@ public class FightMode : MonoBehaviour
         onEnd?.Invoke();
     }
 
-    public IEnumerator CheckCirclCor(Action onResult, ItemWeapon weapon, bool reverceArrow = false)
+    public virtual CheckResult CheckSuccesTarget()
     {
-        _timer = 0;
-        screenPressed = false;
-        while (!screenPressed)
-        {
-            _timer += Time.deltaTime / weapon.attackSpeed;
-            if (weapon.infinityCheck)
-                _timer = _timer % 1;
-            else if (_timer >= 0.99f) screenPressed = true;
-
-            panelFighPhase.RotateArrow(_timer, reverceArrow);
-
-            yield return null;
-        }
-        if (reverceArrow)
-            _timer = 1 - _timer;
-
-        panelFighPhase.Hide();
-
-        onResult?.Invoke();
-    }
-
-    public CheckResult CheckSuccesTarget()
-    {
-        //Debug.Log("_timer = " + _timer + " winZone.x " + winZone.x + " winZone.y" + winZone.y);
-        CheckResult result;
-        bool hit = _timer >= winZone.x && _timer <= winZone.y;
-        bool crit = _timer >= critZone.x && _timer <= critZone.y;
-        result = hit ? CheckResult.Hit : CheckResult.Miss;
-        result = crit ? CheckResult.Crit : result;
+        CheckResult result = CheckResult.Miss;
         return result;
     }
 
@@ -168,13 +104,19 @@ public class FightMode : MonoBehaviour
                 break;
             case CheckResult.Crit:
                 if (checkType == CheckType.Attak)
-                    Defender.GetDamage(Attacker.stats.strength*Attacker.stats.critPercent);
+                    Defender.GetDamage(Attacker.stats.strength * Attacker.stats.critPercent);
                 else
                     Defender.Defend();
                 break;
             case CheckResult.Miss:
                 if (checkType == CheckType.Defend)
                     Defender.GetDamage(Attacker.stats.strength * Attacker.stats.critPercent);
+                else
+                    Defender.Defend();
+                break;
+            case CheckResult.MagicHit:
+                if (checkType == CheckType.Attak)
+                    Defender.GetDamage(Attacker.stats.strength);
                 else
                     Defender.Defend();
                 break;
@@ -198,18 +140,5 @@ public class FightMode : MonoBehaviour
             GameManager.Inst.storyController.playerGoldCount += (int)(Defender.stats.strength + Defender.stats.defendce)*2;
             onFightEnd?.Invoke();
         }
-    }
-
-    public Vector2 RandomPlaceOnCircl(float percent)
-    {
-        float r = UnityEngine.Random.Range(0, 100 - percent);
-        Vector2 res = new Vector2(0 + r, percent + r);
-        res = res / 100;
-        return res;
-    }
-
-    public float DeffendAttackFormul(float streng, float defend)
-    {
-        return (50 - ((defend / 100) - (streng / 100)) * 50)*0.25f;
     }
 }

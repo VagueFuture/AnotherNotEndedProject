@@ -146,9 +146,8 @@ public class Tonnel : MonoBehaviour
 
     private void InitFightMode(Enemy enemy, Tonnel tonnel, Character player, Action onFightEnd)
     {
-        FightMode.Inst.InitFightMode(tonnel, onFightEnd);
         UiController.Inst.panelTonnelInfo.Hide();
-        FightMode.Inst.Fight(player.controller, enemy.controller);
+        FightModeContriller.Inst.InitFight(enemy,player,onFightEnd);
     }
 }
 
