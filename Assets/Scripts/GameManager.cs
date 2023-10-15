@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     public Action<Item> OnItemRemoveFromInventory;
     public Action<Item, Inventory.PlaceType> OnItemEquiped;
     public Action<List<Tonnel>> OnTonnelInThisLvlUpdate;
+    public Action<Spell> OnSpellCasted;
 
     public Action<List<DirectRecord>> OnDragRuneEnd;
 

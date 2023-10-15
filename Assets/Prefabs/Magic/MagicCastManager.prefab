@@ -65,6 +65,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d09cd276cc36c86409e133d6c2328360, type: 2}
   - {fileID: 11400000, guid: 72a5f5d3162f4ef499401d23adc52eae, type: 2}
   - {fileID: 11400000, guid: 3e79738507d211749b106915fd839f8a, type: 2}
+  - {fileID: 11400000, guid: cdfdc25de2eae0542ba22be7e53732bb, type: 2}
+  - {fileID: 11400000, guid: 136e3709dff1aa640b141cd00dc6b96d, type: 2}
 --- !u!114 &1579878161090343506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,3 +93,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85c84ff204c161f408b3e91df11d8560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spells:
+  - {fileID: 11400000, guid: 521a7b13276efd14db183a75b29db199, type: 2}
+  - {fileID: 11400000, guid: 72588e0154db86c45a4f78bff09e3658, type: 2}
+  - {fileID: 11400000, guid: 52b0bb4b06d3f1c4d9e3a3040efafc9e, type: 2}
+  - {fileID: 11400000, guid: ecdebd15b19b5b246b92ec1551f374ae, type: 2}
+  - {fileID: 11400000, guid: b1ee56cdff8f0e64186d8673c1a48d9e, type: 2}
+  - {fileID: 11400000, guid: 0713f4512bace004dac021fc7dee9e72, type: 2}
+  - {fileID: 11400000, guid: 9d29bf35f937d9c4cbb7f607c9925573, type: 2}

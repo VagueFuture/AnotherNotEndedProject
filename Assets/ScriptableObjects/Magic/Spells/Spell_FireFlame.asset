@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdf0d0edc4ab5164eb0a9fd3f1e0c2f1, type: 3}
   m_Name: Spell_FireFlame
   m_EditorClassIdentifier: 
-  runesCombination: []
+  runesCombination:
+  - {fileID: 11400000, guid: 136e3709dff1aa640b141cd00dc6b96d, type: 2}
+  visualEffectCast: {fileID: 6396735827682560693, guid: 95fbfa97b4eb10c40ad461ea37227ad2, type: 3}
+  visualEffectResult: {fileID: 2319817314884169953, guid: 48e51e2c1785bee49813b4c1822017ec, type: 3}
+  spellTime: 2
   effect:
-    status: 0
-    effectCount: 10
+    status: 8
+    effectCount: 5

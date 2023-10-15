@@ -6,5 +6,8 @@ using UnityEngine;
 public class Spell : ScriptableObject
 {
     public List<Rune> runesCombination = new List<Rune>();
+    public GameObject visualEffectCast, visualEffectResult;
+    public int spellTime = 1;
+    public bool effectOnSelf;
     public Effect effect;
 }

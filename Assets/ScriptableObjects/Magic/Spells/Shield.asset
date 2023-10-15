@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdf0d0edc4ab5164eb0a9fd3f1e0c2f1, type: 3}
   m_Name: Shield
   m_EditorClassIdentifier: 
-  runesCombination: []
+  runesCombination:
+  - {fileID: 11400000, guid: d09cd276cc36c86409e133d6c2328360, type: 2}
+  visualEffectCast: {fileID: 4856203902428692841, guid: 0f279a6ac6b53fe4b97890284d084c7b, type: 3}
+  visualEffectResult: {fileID: 2319817314884169953, guid: 48e51e2c1785bee49813b4c1822017ec, type: 3}
+  spellTime: 1
+  effectOnSelf: 1
   effect:
-    status: 0
-    effectCount: 10
+    status: 9
+    effectCount: 1

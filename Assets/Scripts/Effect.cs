@@ -35,6 +35,12 @@ public class Effect
             case EffectStatus.BuffVision:
                 character.stats.vision += effectCount;
                 break;
+            case EffectStatus.Damage:
+                character.GetDamage(effectCount);
+                break;
+            case EffectStatus.shield:
+                character.stats.invule += effectCount;
+                break;
         }
     }
 

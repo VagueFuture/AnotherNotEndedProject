@@ -75,4 +75,5 @@ public class Stats
     public float critChance = 1;
     public float critPercent = 1.5f;
     public int vision = 2;
+    public int invule = 0;
 }

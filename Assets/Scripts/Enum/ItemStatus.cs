@@ -13,5 +13,7 @@ public enum EffectStatus
     BuffAgulity,
     BuffCrit,
     BuffCritChance,
-    BuffVision
+    BuffVision,
+    Damage,
+    shield
 }

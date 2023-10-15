@@ -7,7 +7,8 @@ public class MagicMode : MonoBehaviour
 {
     [SerializeField] GameObject magicCastManager;
     public RuneChecker runeChecker;
-    Action<Rune> listner; 
+    public Spells_Checker spells_Checker;
+    Action<Rune> listner;
     private void Start()
     {
         magicCastManager.gameObject.SetActive(false);
@@ -28,7 +29,10 @@ public class MagicMode : MonoBehaviour
 
     public void ReadRuneCombitation(List<Rune> runes)
     {
+        Spell spell = spells_Checker.CheckSpells(runes);
+        if (spell == null) return;
 
+        GameManager.Inst.OnSpellCasted?.Invoke(spell);
     }
 
 }

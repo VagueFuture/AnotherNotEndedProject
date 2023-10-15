@@ -120,13 +120,46 @@ MonoBehaviour:
     critChance: 1
     critPercent: 1.5
     vision: 2
+    invule: 0
   myAnim: {fileID: 1190622395664903954}
   dead: 0
   ready: 0
   equipedWeapon: {fileID: 0}
+  fist: {fileID: 11400000, guid: 273508e5e69b5864d95d72e62af6c6c8, type: 2}
   equipedShield: {fileID: 0}
   weaponPlace: {fileID: 6506375027667211796}
   shieldPlace: {fileID: 7753095324788419189}
+  spellPlace: {fileID: 878694751418724507}
+--- !u!1 &6156194443597453018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 878694751418724507}
+  m_Layer: 0
+  m_Name: SpellPlace
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &878694751418724507
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6156194443597453018}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.074, y: 0.323, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1417477096142273527}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &6479133376027627341
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,6 +251,7 @@ Transform:
   - {fileID: 289096760636951844}
   - {fileID: 2785678089536775231}
   - {fileID: 3009588732393827885}
+  - {fileID: 878694751418724507}
   m_Father: {fileID: 8806754295747886511}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -9,14 +9,15 @@ public class FightMagicMode : FightMode
     public override void InitFightMode(Character player, Action onFightEnd)
     {
         base.InitFightMode(player, onFightEnd);
+        panelFighPhase.InitMagic();
         if (player.controller.EquipedItemWeapon.typeItem == ItemType.SpellsBook)
             fightInited = true;
 
     }
     public override void Attack(MyCharacterController Attacker, MyCharacterController Defender, Action onEnd, bool needWhaitPressButton = true)
     {
-        base.Attack(Attacker, Defender, onEnd, needWhaitPressButton);
         panelFighPhase.InitMagic();
+        base.Attack(Attacker, Defender, onEnd, needWhaitPressButton);
         panelFighPhase.FillMagicData(runes);
     }
 
@@ -31,7 +32,11 @@ public class FightMagicMode : FightMode
         time = (int)(Attacker.EquipedItemWeapon.attackSpeed + 0.5f);
         base.BrawlBegin(Attacker, Defender, checkType, onEnd, time);
 
-        
+        if(Attacker.player)
+            AttachActions(Attacker, Defender);
+        else
+            AttachActions(Defender, Attacker);
+
         GameManager.Inst.magickController.InitMagicMode(OnRuneSucces);
 
         panelFighPhase.ShowCounter(time, panelFighPhase.magicCounterText, () =>
@@ -40,8 +45,14 @@ public class FightMagicMode : FightMode
                 StopCoroutine(corrWhait);
             corrWhait = WaitReady(Attacker, Defender, () =>
             {
+                GameManager.Inst.magickController.ReadRuneCombitation(runes);
+
+                if (Attacker.player)
+                    DetachAction(Attacker,Defender);
+                else
+                    DetachAction(Defender, Attacker);
+
                 SpellsTimerEnd(onEnd);
-               
             });
             StartCoroutine(corrWhait);
         });
@@ -49,14 +60,33 @@ public class FightMagicMode : FightMode
 
     private void SpellsTimerEnd(Action OnEnd)
     {
+        runes.Clear();
         GameManager.Inst.magickController.DeactivateMagicMode();
         panelFighPhase.Hide();
         OnEnd?.Invoke();
     }
 
-    public override CheckResult CheckSuccesTarget()
+    private void AttachActions(MyCharacterController Attacker, MyCharacterController Defender)
     {
-        CheckResult result = CheckResult.MagicHit;
+        GameManager.Inst.OnSpellCasted += Attacker.CastSpell;
+        GameManager.Inst.OnSpellCasted += Defender.ApplySpellToMe;
+    }
+
+    private void DetachAction(MyCharacterController Attacker, MyCharacterController Defender)
+    {
+        GameManager.Inst.OnSpellCasted -= Attacker.CastSpell;
+        GameManager.Inst.OnSpellCasted -= Defender.ApplySpellToMe;
+    }
+
+    public override CheckResult CheckSuccesTarget(CheckType checkType)
+    {
+        CheckResult result;
+        if (checkType == CheckType.Defend)
+            result = CheckResult.Miss;
+        else
+            result = CheckResult.MagicHit;
         return result;
     }
+
+
 }

@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdf0d0edc4ab5164eb0a9fd3f1e0c2f1, type: 3}
   m_Name: Spell_lightning
   m_EditorClassIdentifier: 
-  runesCombination: []
+  runesCombination:
+  - {fileID: 11400000, guid: 3e79738507d211749b106915fd839f8a, type: 2}
+  visualEffectCast: {fileID: 2428733372126377100, guid: 6bb85d14b225a024e836dc8a90dc86a5, type: 3}
+  visualEffectResult: {fileID: 2319817314884169953, guid: 48e51e2c1785bee49813b4c1822017ec, type: 3}
+  spellTime: 1
+  effectOnSelf: 0
   effect:
     status: 0
     effectCount: 10

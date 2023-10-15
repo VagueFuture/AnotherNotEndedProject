@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,15 +11,18 @@ public class MyCharacterController : MonoBehaviour
     public bool dead = false;
     [HideInInspector]
     public bool ready = true;
-    [SerializeField] ItemWeapon equipedWeapon;
+    [SerializeField] ItemWeapon equipedWeapon, fist;
     [SerializeField] ItemWeapon equipedShield;
     GameObject equipweaponObj;
     GameObject equipShieldObj;
-    [SerializeField] Transform weaponPlace, shieldPlace;
+    [SerializeField] Transform weaponPlace, shieldPlace, spellPlace;
+    private GameObject activeSpellEffect;
     public ItemWeapon EquipedItemWeapon
     {
         get
         {
+            if (equipedWeapon == null)
+                return fist;
             return equipedWeapon;
         }
         set
@@ -47,6 +51,8 @@ public class MyCharacterController : MonoBehaviour
     {
         get
         {
+            if (equipedShield == null)
+                return fist;
             return equipedShield;
         }
         set
@@ -101,6 +107,12 @@ public class MyCharacterController : MonoBehaviour
 
     public void GetDamage(float damage)
     {
+        if (stats.invule > 0)
+        {
+            stats.invule--;
+            return;
+        }
+
         stats.Health -= damage;
         if (stats.Health <= 0)
         {
@@ -153,7 +165,36 @@ public class MyCharacterController : MonoBehaviour
                 return 1;
             case ItemType.Shield:
                 return 2;
+            case ItemType.SpellsBook:
+                return 3;
         }
         return 0;
+    }
+
+    public void CastSpell(Spell spell)
+    {
+        if (spell == null) return;
+        if (spell.effectOnSelf)
+            ApplyEffect(spell.effect);
+        activeSpellEffect = Instantiate(spell.visualEffectCast, spellPlace);
+        StartCoroutine(WaitCur(spell.spellTime, () => {
+            Destroy(activeSpellEffect);
+        }));
+    }
+
+    public void ApplySpellToMe(Spell spell)
+    {
+        activeSpellEffect = Instantiate(spell.visualEffectResult, spellPlace);
+        if(!spell.effectOnSelf)
+            ApplyEffect(spell.effect);
+        StartCoroutine(WaitCur(spell.spellTime, () => {
+            Destroy(activeSpellEffect);
+        }));
+    }
+
+    IEnumerator WaitCur(float time, Action onEnd)
+    {
+        yield return new WaitForSeconds(time);
+        onEnd?.Invoke();
     }
 }

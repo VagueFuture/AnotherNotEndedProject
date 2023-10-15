@@ -44,7 +44,7 @@ public class StoryController : MonoBehaviour
         yield return null;
         GenerateTonnels();
         UiController.Inst.playerInventory.AddItemToInventory(GameManager.Inst.gameItemGenerator.GenerateCopy(itemTest[0]),weaponCell);
-        UiController.Inst.playerInventory.AddItemToInventory(GameManager.Inst.gameItemGenerator.GenerateCopy(itemTest[1]), shieldCell);
+        //UiController.Inst.playerInventory.AddItemToInventory(GameManager.Inst.gameItemGenerator.GenerateCopy(itemTest[1]), shieldCell);
     }
 
     public void GenerateTonnels()

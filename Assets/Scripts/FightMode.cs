@@ -81,7 +81,7 @@ public class FightMode :MonoBehaviour
         onEnd?.Invoke();
     }
 
-    public virtual CheckResult CheckSuccesTarget()
+    public virtual CheckResult CheckSuccesTarget(CheckType checkType)
     {
         CheckResult result = CheckResult.Miss;
         return result;
@@ -91,8 +91,8 @@ public class FightMode :MonoBehaviour
     public void Turn(MyCharacterController Attacker, MyCharacterController Defender)
     {
         Attacker.Attak();
-        CheckResult result = CheckSuccesTarget();
         CheckType checkType = Attacker.player ? CheckType.Attak : CheckType.Defend;
+        CheckResult result = CheckSuccesTarget(checkType);
 
         switch (result)
         {
@@ -115,14 +115,10 @@ public class FightMode :MonoBehaviour
                     Defender.Defend();
                 break;
             case CheckResult.MagicHit:
-                if (checkType == CheckType.Attak)
-                    Defender.GetDamage(Attacker.stats.strength);
-                else
-                    Defender.Defend();
                 break;
         }
 
-        if (!Defender.dead)
+        if (!Defender.dead && !Attacker.dead)
         {
             countCheck++;
             if (countCheck < Attacker.EquipedItemWeapon.checkCount)

@@ -99,6 +99,16 @@ public class UiController : MonoBehaviour
         panelShop.PressButtonTrade();
     }
 
+    public void ShowPageStat()
+    {
+        panelStatsInfo.ShowPageStat();
+    }
+
+    public void ShowPAgeRunes()
+    {
+        panelStatsInfo.ShowPageRunes();
+    }
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -326,11 +336,9 @@ public class PanelFighPhase
 [System.Serializable]
 public class PanelStatsInfo
 {
-    [SerializeField]
     public GameObject panelSelf;
-    [SerializeField]
-    public Text strengthText, defenceText, agilityText, luckText, healthText;
-
+    public Text strengthText, defenceText, agilityText, luckText, healthText,critChanceText, critPecentText, visionText, invuleText;
+    [SerializeField] private GameObject pageStat, pageRunes;
     public void ShowPanel(Stats stats)
     {
         FillData(stats);
@@ -349,6 +357,22 @@ public class PanelStatsInfo
         agilityText.text = stats.agility + "";
         luckText.text = stats.luck + "";
         healthText.text = stats.Health + "";
+        critChanceText.text = stats.critChance + "";
+        critPecentText.text = stats.critPercent + "";
+        visionText.text = stats.vision + "";
+        invuleText.text = stats.invule + "";
+    }
+
+    public void ShowPageStat()
+    {
+        pageStat.SetActive(true);
+        pageRunes.SetActive(false);
+    }
+
+    public void ShowPageRunes()
+    {
+        pageRunes.SetActive(true);
+        pageStat.SetActive(false);
     }
 }
 [System.Serializable]

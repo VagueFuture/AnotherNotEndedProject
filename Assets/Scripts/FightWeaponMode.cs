@@ -81,7 +81,7 @@ public class FightWeaponMode : FightMode
         onResult?.Invoke();
     }
 
-    public override CheckResult CheckSuccesTarget()
+    public override CheckResult CheckSuccesTarget(CheckType checkType)
     {
         CheckResult result;
         bool hit = _timer >= winZone.x && _timer <= winZone.y;

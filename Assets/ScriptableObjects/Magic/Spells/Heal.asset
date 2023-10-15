@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdf0d0edc4ab5164eb0a9fd3f1e0c2f1, type: 3}
   m_Name: Heal
   m_EditorClassIdentifier: 
-  runesCombination: []
+  runesCombination:
+  - {fileID: 11400000, guid: bc9cbc5f44e751f4b8c6c0f3ec609ebf, type: 2}
+  visualEffectCast: {fileID: 318494857372985060, guid: f980a6c880a557844b842f66a1bf46df, type: 3}
+  visualEffectResult: {fileID: 2319817314884169953, guid: 48e51e2c1785bee49813b4c1822017ec, type: 3}
+  spellTime: 1
+  effectOnSelf: 1
   effect:
-    status: 0
+    status: 1
     effectCount: 10

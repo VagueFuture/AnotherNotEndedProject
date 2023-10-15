@@ -15,4 +15,4 @@ MonoBehaviour:
   runeDragSteps:
   - directionType: 3
   - directionType: 0
-  runeSprite: {fileID: 21300000, guid: d26c747bf619de946807ef9fd2a0303d, type: 3}
+  runeSprite: {fileID: 21300000, guid: fc95de9f42c6bb14ab6c0a77513edb45, type: 3}

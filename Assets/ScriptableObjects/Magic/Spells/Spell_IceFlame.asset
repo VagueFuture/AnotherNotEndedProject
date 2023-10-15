@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdf0d0edc4ab5164eb0a9fd3f1e0c2f1, type: 3}
   m_Name: Spell_IceFlame
   m_EditorClassIdentifier: 
-  runesCombination: []
+  runesCombination:
+  - {fileID: 11400000, guid: cdfdc25de2eae0542ba22be7e53732bb, type: 2}
+  visualEffectCast: {fileID: 2428733372126377100, guid: 6bb85d14b225a024e836dc8a90dc86a5, type: 3}
+  visualEffectResult: {fileID: 318494857372985060, guid: f980a6c880a557844b842f66a1bf46df, type: 3}
+  spellTime: 2
   effect:
-    status: 0
-    effectCount: 10
+    status: 8
+    effectCount: 5

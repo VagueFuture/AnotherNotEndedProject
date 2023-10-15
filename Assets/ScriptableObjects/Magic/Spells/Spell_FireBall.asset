@@ -12,7 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdf0d0edc4ab5164eb0a9fd3f1e0c2f1, type: 3}
   m_Name: Spell_FireBall
   m_EditorClassIdentifier: 
-  runesCombination: []
+  runesCombination:
+  - {fileID: 11400000, guid: 136e3709dff1aa640b141cd00dc6b96d, type: 2}
+  - {fileID: 11400000, guid: d281b98cf9e4d4f4e8c9b45617fc3af3, type: 2}
+  visualEffectCast: {fileID: 4340099489842231661, guid: f0d1783e1692c4a4192ee849e3d25be5, type: 3}
+  visualEffectResult: {fileID: 2319817314884169953, guid: 48e51e2c1785bee49813b4c1822017ec, type: 3}
+  spellTime: 1
+  effectOnSelf: 0
   effect:
-    status: 0
-    effectCount: 10
+    status: 8
+    effectCount: 30
