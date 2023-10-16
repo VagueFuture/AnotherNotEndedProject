@@ -38,6 +38,7 @@ public class UiController : MonoBehaviour
 
     public PanelHaveTonnels panelHaveTonnels;
 
+    public MagicPanel magicPanel;
     public void OnPressButtonForward()
     {
         panelTonnelInfo.Hide();
@@ -107,6 +108,24 @@ public class UiController : MonoBehaviour
     public void ShowPAgeRunes()
     {
         panelStatsInfo.ShowPageRunes();
+    }
+
+    public void OpenMagicTable()
+    {
+        magicPanel.Show();
+        magicPanel.InitMagicMode();
+    }
+
+    public void DropRune()
+    {
+        GameManager.Inst.magickController.ReadRuneCombitation();
+    }
+
+    public void CloseMagicTable()
+    {
+        GameManager.Inst.magickController.ReadRuneCombitation();
+        GameManager.Inst.magickController.DeactivateMagicMode();
+        magicPanel.Hide();
     }
 
     private void Update()
@@ -230,9 +249,7 @@ public class PanelFighPhase
     public GameObject arrowLeftDir, arrowRightDir;
 
     public Text magicCounterText;
-    [SerializeField] Transform runeParent;
-    [SerializeField] Image runeImage;
-    private List<Image> runesImages = new List<Image>();
+   
 
     public void InitBrawl()
     {
@@ -251,16 +268,11 @@ public class PanelFighPhase
         pageBrawl.SetActive(false);
         brawlButton.gameObject.SetActive(true);
         magicCounterText.gameObject.SetActive(false);
-        ClearRunesImages();
         panelSelf.SetActive(true);
+
+        UiController.Inst.magicPanel.Show();
     }
 
-    private void ClearRunesImages()
-    {
-        foreach (var r in runesImages)
-            GameObject.Destroy(r.gameObject);
-        runesImages.Clear();
-    }
 
     public void FillBrawlData(Vector3 winZone, Vector3 critZone, FightMode.CheckType checkType)
     {
@@ -288,17 +300,7 @@ public class PanelFighPhase
         }
     }
 
-    public void FillMagicData(List<Rune> runes)
-    {
-        ClearRunesImages();
-        foreach(var rune in runes)
-        {
-            Image newRune = GameObject.Instantiate(runeImage, runeParent).GetComponent<Image>();
-            newRune.gameObject.SetActive(true);
-            newRune.sprite = rune.runeSprite;
-            runesImages.Add(newRune);
-        }
-    }
+    
 
     public void RotateArrow(float euler, bool reverse)
     {
@@ -599,5 +601,54 @@ public class PanelHaveTonnels
     {
         MapSpawner.instance.SpawnTonnelForward(tonnel);
         HidePanel();
+    }
+}
+[System.Serializable]
+public class MagicPanel
+{
+    [SerializeField] GameObject panelSelf;
+    [SerializeField] Transform runeParent;
+    [SerializeField] Image runeImage;
+    private List<Image> runesImages = new List<Image>();
+    private bool attach;
+    public void Show()
+    {
+        panelSelf.SetActive(true);
+        ClearRunesImages();
+    }
+
+    public void InitMagicMode(Action<Rune> OnRuneSucces = null)
+    {
+        
+        GameManager.Inst.magickController.InitMagicMode(OnRuneSucces);
+        if (!attach)
+        {
+            attach = true;
+            GameManager.Inst.magickController.runesUpdate += FillMagicData;
+        }
+    }
+
+    public void Hide()
+    {
+        panelSelf.SetActive(false);
+    }
+
+    private void ClearRunesImages()
+    {
+        foreach (var r in runesImages)
+            GameObject.Destroy(r.gameObject);
+        runesImages.Clear();
+    }
+
+    public void FillMagicData(List<Rune> runes)
+    {
+        ClearRunesImages();
+        foreach (var rune in runes)
+        {
+            Image newRune = GameObject.Instantiate(runeImage, runeParent).GetComponent<Image>();
+            newRune.gameObject.SetActive(true);
+            newRune.sprite = rune.runeSprite;
+            runesImages.Add(newRune);
+        }
     }
 }

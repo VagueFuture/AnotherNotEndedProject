@@ -10,8 +10,8 @@ public class DirectionFingerCapture : MonoBehaviour
     private Vector2 lastMousePosition = Vector3.zero, positionMouse = Vector2.positiveInfinity, avgDirection = Vector2.zero;
     private List<DirectRecord> directPaths = new List<DirectRecord>();
     private DirectRecord directRecord;
-    private directionType previousDirection,nowDirection, checkDirection = directionType.none;
-    private float _timer, timercheck = 0.05f, distanceDrag = 0;
+    private directionType previousDirection = directionType.none,nowDirection, checkDirection = directionType.none;
+    private float _timer, timercheck = 0.001f, distanceDrag = 0;
     private int countDirectionInput = 0, countDirectionChanged = 0;
     [SerializeField] int ofsssetDirectionChange = 2;
     public Action<Vector3> OnMouseDown, OnMouseUp, OnMouseDrag;
@@ -97,6 +97,13 @@ public class DirectionFingerCapture : MonoBehaviour
             }
         }
     }
+    private void DebugShowResultDrag(List<DirectRecord> directPaths)
+    {
+        Debug.Log("_________________________Result___________________________");
+        foreach (var d in directPaths)
+            Debug.Log(d.directionType);
+        Debug.Log("__________________________end__________________________");
+    }
     private void MouseUp(Vector3 position)
     {
         mouseDown = false;
@@ -123,6 +130,7 @@ public class DirectionFingerCapture : MonoBehaviour
 
     private void ResaultMouseDrag()
     {
+        DebugShowResultDrag(directPaths);
         GameManager.Inst.OnDragRuneEnd?.Invoke(directPaths);
         directPaths.Clear();
     }
@@ -134,14 +142,14 @@ public class DirectionFingerCapture : MonoBehaviour
         Vector2 result = heading / distance;
         return result;
     }
-
+    
     private void RecordDrag(Vector2 position, Vector2 lastPosition, Vector2 direction)
     {
 
         var heading = position - lastPosition;
         var distance = heading.magnitude;
         distanceDrag += distance;
-
+        nowDirection = CheckDirection(direction);
         direction = AvgDirection(direction);
         directionType dirType = CheckDirection(direction);
         //Debug.Log("AvgDirection = " + direction);
@@ -164,8 +172,11 @@ public class DirectionFingerCapture : MonoBehaviour
 
         if (countDirectionChanged >= ofsssetDirectionChange)
         {
+            if (previousDirection == checkDirection)
+                return false;
             previousDirection = checkDirection;
-            checkDirection = nowDir;
+            ClearAvgDirection();
+            countDirectionChanged = 0;
             OnDirectionChanged?.Invoke();
             return true;
         }
@@ -173,19 +184,45 @@ public class DirectionFingerCapture : MonoBehaviour
         return false;
     }
 
+    directionType nowDirNotAvg, prevDirNotAvg = directionType.none;
+    int notAvdDirChange = 0;
+    [SerializeField] int offssetNotAvgDirCheck = 1;
+    private bool CheckNotAvgDerectionChange()
+    {
+        if (prevDirNotAvg == directionType.none)
+            prevDirNotAvg = nowDirNotAvg;
+
+        if (prevDirNotAvg != nowDirNotAvg)
+            notAvdDirChange++;
+        else
+            notAvdDirChange = 0;
+
+        prevDirNotAvg = nowDirNotAvg;
+        if(notAvdDirChange>= offssetNotAvgDirCheck)
+        {
+            notAvdDirChange = 0;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
     private Vector2 AvgDirection(Vector2 direction)
     {
         countDirectionInput++;
-        avgDirection = (avgDirection + direction) * (1f / countDirectionInput);
+        avgDirection += direction;
 
-        return avgDirection;
+        return avgDirection * (1f / countDirectionInput);
     }
 
     private void ClearAvgDirection()
     {
         countDirectionInput = 0;
-        avgDirection = Vector2.zero;
         checkDirection = directionType.none;
+        avgDirection = Vector2.zero;
         distanceDrag = 0;
     }
 

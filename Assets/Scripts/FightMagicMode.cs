@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class FightMagicMode : FightMode
 {
-    private List<Rune> runes = new List<Rune>();
+    
+    private MagicPanel magicPanel;
     public override void InitFightMode(Character player, Action onFightEnd)
     {
         base.InitFightMode(player, onFightEnd);
         panelFighPhase.InitMagic();
+        magicPanel = UiController.Inst.magicPanel;
         if (player.controller.EquipedItemWeapon.typeItem == ItemType.SpellsBook)
             fightInited = true;
 
@@ -18,15 +20,9 @@ public class FightMagicMode : FightMode
     {
         panelFighPhase.InitMagic();
         base.Attack(Attacker, Defender, onEnd, needWhaitPressButton);
-        panelFighPhase.FillMagicData(runes);
     }
 
-    private void OnRuneSucces(Rune rune)
-    {
-        runes.Add(rune);
-        panelFighPhase.FillMagicData(runes);
-    }
-
+   
     protected override void BrawlBegin(MyCharacterController Attacker, MyCharacterController Defender, CheckType checkType, Action onEnd, int time = 10)
     {
         time = (int)(Attacker.EquipedItemWeapon.attackSpeed + 0.5f);
@@ -37,7 +33,7 @@ public class FightMagicMode : FightMode
         else
             AttachActions(Defender, Attacker);
 
-        GameManager.Inst.magickController.InitMagicMode(OnRuneSucces);
+        magicPanel.InitMagicMode();
 
         panelFighPhase.ShowCounter(time, panelFighPhase.magicCounterText, () =>
         {
@@ -45,7 +41,7 @@ public class FightMagicMode : FightMode
                 StopCoroutine(corrWhait);
             corrWhait = WaitReady(Attacker, Defender, () =>
             {
-                GameManager.Inst.magickController.ReadRuneCombitation(runes);
+                GameManager.Inst.magickController.ReadRuneCombitation();
 
                 if (Attacker.player)
                     DetachAction(Attacker,Defender);
@@ -60,7 +56,6 @@ public class FightMagicMode : FightMode
 
     private void SpellsTimerEnd(Action OnEnd)
     {
-        runes.Clear();
         GameManager.Inst.magickController.DeactivateMagicMode();
         panelFighPhase.Hide();
         OnEnd?.Invoke();
