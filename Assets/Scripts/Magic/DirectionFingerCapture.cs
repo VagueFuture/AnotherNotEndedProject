@@ -2,24 +2,37 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class DirectionFingerCapture : MonoBehaviour
 {
+    public Slider sliderOfssset, minLineCount;
+    public Text text1, text2;
+
     public enum directionType { Right, Left, Up, Down, RightDown, LeftDown, RigthUp, LeftUP, none };
     private bool mouseDown;
     private Vector2 lastMousePosition = Vector3.zero, positionMouse = Vector2.positiveInfinity, avgDirection = Vector2.zero;
     private List<DirectRecord> directPaths = new List<DirectRecord>();
     private DirectRecord directRecord;
-    private directionType previousDirection = directionType.none,nowDirection, checkDirection = directionType.none;
-    private float _timer, timercheck = 0.001f, distanceDrag = 0;
+    private directionType previousDirection = directionType.none, nowDirection, checkDirection = directionType.none;
+    private float _timer, timercheck = 0.005f, distanceDrag = 0;
     private int countDirectionInput = 0, countDirectionChanged = 0;
     [SerializeField] int ofsssetDirectionChange = 2;
     public Action<Vector3> OnMouseDown, OnMouseUp, OnMouseDrag;
     public Action OnDirectionChanged;
 
     private Camera cam;
+
+    private void Start()
+    {
+        sliderOfssset.onValueChanged.AddListener((value) => { float res = Mathf.Lerp(1f, 10f, value); ofsssetDirectionChange = (int)res; });
+        minLineCount.onValueChanged.AddListener((value) => { float res = Mathf.Lerp(1f, 20f, value); minLineCountDirection = (int)res; });
+    }
+
     private void Update()
     {
+        text1.text = ofsssetDirectionChange + "";
+        text2.text = minLineCountDirection + "";
+
         lastMousePosition = positionMouse;
         positionMouse = Input.mousePosition;
         _timer += Time.deltaTime;
@@ -37,11 +50,7 @@ public class DirectionFingerCapture : MonoBehaviour
         else
         if (mouseDown)
         {
-            if (_timer >= timercheck)
-            {
-                _timer = 0;
-                MouseDrag(positionMouse);
-            }
+            MouseDrag(positionMouse);
         }
         //DrowDebugCircle();
     }
@@ -57,7 +66,7 @@ public class DirectionFingerCapture : MonoBehaviour
 
         Debug.DrawLine(asd, qwe, Color.green);
         //Debug.Log("MouseDrag on coords " + asd + " LastCoord" + qwe);
-    } 
+    }
     private void DrowDebugCircle()
     {
         for (float x = -1; x <= 1; x += .01f)
@@ -107,8 +116,9 @@ public class DirectionFingerCapture : MonoBehaviour
     private void MouseUp(Vector3 position)
     {
         mouseDown = false;
-        SaveRecord(nowDirection, distanceDrag);
         ClearAvgDirection();
+        ClearMinLineAvgDirection();
+        checkDirection = directionType.none;
         ResaultMouseDrag();
         OnMouseUp?.Invoke(position);
     }
@@ -123,8 +133,12 @@ public class DirectionFingerCapture : MonoBehaviour
     {
         if (positionMouse == lastMousePosition) return;
 
-        Vector2 direction = CalculateDirection(position, lastMousePosition);
-        RecordDrag(position, lastMousePosition, direction);
+        if (_timer >= timercheck)
+        {
+            _timer = 0;
+            Vector2 direction = CalculateDirection(position, lastMousePosition);
+            RecordDrag(direction);
+        }
         OnMouseDrag?.Invoke(position);
     }
 
@@ -142,28 +156,27 @@ public class DirectionFingerCapture : MonoBehaviour
         Vector2 result = heading / distance;
         return result;
     }
-    
-    private void RecordDrag(Vector2 position, Vector2 lastPosition, Vector2 direction)
+
+    //Debug.Log("AvgDirection = " + direction);
+    //Debug.Log("<color=red> {Direction = } </color>" + dirType);/*go to the left {if left svobodno}*/
+
+    private void RecordDrag(Vector2 direction)
     {
+        Vector2 minLDirection = MinLineAvg(direction);
+        minLineDirection = CheckDirection(minLDirection);
 
-        var heading = position - lastPosition;
-        var distance = heading.magnitude;
-        distanceDrag += distance;
-        nowDirection = CheckDirection(direction);
-        direction = AvgDirection(direction);
-        directionType dirType = CheckDirection(direction);
-        //Debug.Log("AvgDirection = " + direction);
-        //Debug.Log("<color=red> {Direction = } </color>" + dirType);/*go to the left {if left svobodno}*/
+        Vector2 allLineAvgDirection = AvgDirection(direction);
+        nowDirection = CheckDirection(allLineAvgDirection);
 
-        if (AvgDirectionChanged(dirType))
+        if (MinLineDirectionChanged(minLineDirection))
+        {
+            //Debug.Log("<color=red> {minLineDirection = } </color>" + previousDirection);/*go to the left {if left svobodno}*/
             SaveRecord(previousDirection, distanceDrag);
+        }
     }
 
-    private bool AvgDirectionChanged(directionType nowDir)
+    private bool MinLineDirectionChanged(directionType nowDir)
     {
-        nowDirection = nowDir;
-        if (checkDirection == directionType.none)
-            checkDirection = nowDir;
 
         if (checkDirection != nowDir)
             countDirectionChanged++;
@@ -172,43 +185,49 @@ public class DirectionFingerCapture : MonoBehaviour
 
         if (countDirectionChanged >= ofsssetDirectionChange)
         {
-            if (previousDirection == checkDirection)
-                return false;
-            previousDirection = checkDirection;
-            ClearAvgDirection();
-            countDirectionChanged = 0;
+            checkDirection = nowDir;
+
+            previousDirection = nowDirection;
             OnDirectionChanged?.Invoke();
+
+            ClearAvgDirection();
+            ClearMinLineAvgDirection();
+            countDirectionChanged = 0;
+
             return true;
         }
 
         return false;
     }
 
-    directionType nowDirNotAvg, prevDirNotAvg = directionType.none;
-    int notAvdDirChange = 0;
-    [SerializeField] int offssetNotAvgDirCheck = 1;
-    private bool CheckNotAvgDerectionChange()
+    [SerializeField] int minLineCountDirection;
+    directionType minLineDirection = directionType.none;
+    Queue<Vector2> minLineDirections = new Queue<Vector2>();
+    private Vector3 MinLineAvg(Vector2 direction)
     {
-        if (prevDirNotAvg == directionType.none)
-            prevDirNotAvg = nowDirNotAvg;
-
-        if (prevDirNotAvg != nowDirNotAvg)
-            notAvdDirChange++;
-        else
-            notAvdDirChange = 0;
-
-        prevDirNotAvg = nowDirNotAvg;
-        if(notAvdDirChange>= offssetNotAvgDirCheck)
+        while (minLineDirections.Count >= minLineCountDirection)
         {
-            notAvdDirChange = 0;
-            return true;
-        }
-        else
-        {
-            return false;
+            minLineDirections.Dequeue();
         }
 
+        minLineDirections.Enqueue(direction);
+        Vector2 sumOfVectores = Vector2.zero;
+
+        foreach (var vector in minLineDirections)
+            sumOfVectores += vector;
+
+
+        return sumOfVectores * (1f / minLineDirections.Count);
     }
+
+    public void ClearMinLineAvgDirection()
+    {
+        while (minLineDirections.Count > 0)
+        {
+            minLineDirections.Dequeue();
+        }
+    }
+
 
     private Vector2 AvgDirection(Vector2 direction)
     {
@@ -221,13 +240,16 @@ public class DirectionFingerCapture : MonoBehaviour
     private void ClearAvgDirection()
     {
         countDirectionInput = 0;
-        checkDirection = directionType.none;
         avgDirection = Vector2.zero;
         distanceDrag = 0;
     }
 
     private void SaveRecord(directionType directionType, float distance)
     {
+        if (directionType == directionType.none) return;
+        if (directPaths.Count > 0)
+            if (directPaths[directPaths.Count - 1].directionType == directionType) return;
+
         directRecord.directionType = directionType;
         directPaths.Add(directRecord);
         lastMousePosition = positionMouse;
