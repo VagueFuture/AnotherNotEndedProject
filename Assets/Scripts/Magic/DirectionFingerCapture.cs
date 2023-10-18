@@ -5,17 +5,16 @@ using UnityEngine;
 using UnityEngine.UI;
 public class DirectionFingerCapture : MonoBehaviour
 {
-    public Slider sliderOfssset, minLineCount;
-    public Text text1, text2;
+    public Slider sliderOfssset, minLineCount, checkTime, junkPercentSlider;
+    public Text text1, text2, text3,text4;
 
     public enum directionType { Right, Left, Up, Down, RightDown, LeftDown, RigthUp, LeftUP, none };
     private bool mouseDown;
     private Vector2 lastMousePosition = Vector3.zero, positionMouse = Vector2.positiveInfinity, avgDirection = Vector2.zero;
     private List<DirectRecord> directPaths = new List<DirectRecord>();
-    private DirectRecord directRecord;
     private directionType previousDirection = directionType.none, nowDirection, checkDirection = directionType.none;
-    private float _timer, timercheck = 0.005f, distanceDrag = 0;
-    private int countDirectionInput = 0, countDirectionChanged = 0;
+    private float _timer, timercheck = 0.001f, distanceDrag = 0, distanceLine = 0;
+    private int countDirectionInput = 0, countDirectionChanged = 0, junkPercent = 5;
     [SerializeField] int ofsssetDirectionChange = 2;
     public Action<Vector3> OnMouseDown, OnMouseUp, OnMouseDrag;
     public Action OnDirectionChanged;
@@ -26,12 +25,16 @@ public class DirectionFingerCapture : MonoBehaviour
     {
         sliderOfssset.onValueChanged.AddListener((value) => { float res = Mathf.Lerp(1f, 10f, value); ofsssetDirectionChange = (int)res; });
         minLineCount.onValueChanged.AddListener((value) => { float res = Mathf.Lerp(1f, 20f, value); minLineCountDirection = (int)res; });
+        checkTime.onValueChanged.AddListener((value) => { float res = Mathf.Lerp(0.001f, 0.01f, value); timercheck = res; });
+        junkPercentSlider.onValueChanged.AddListener((value) => { float res = Mathf.Lerp(1f, 10f, value); junkPercent = (int)res; });
     }
 
     private void Update()
     {
         text1.text = ofsssetDirectionChange + "";
         text2.text = minLineCountDirection + "";
+        text3.text = timercheck + "";
+        text4.text = junkPercent + "";
 
         lastMousePosition = positionMouse;
         positionMouse = Input.mousePosition;
@@ -118,7 +121,6 @@ public class DirectionFingerCapture : MonoBehaviour
         mouseDown = false;
         ClearAvgDirection();
         ClearMinLineAvgDirection();
-        checkDirection = directionType.none;
         ResaultMouseDrag();
         OnMouseUp?.Invoke(position);
     }
@@ -144,7 +146,12 @@ public class DirectionFingerCapture : MonoBehaviour
 
     private void ResaultMouseDrag()
     {
-        DebugShowResultDrag(directPaths);
+        //DebugShowResultDrag(directPaths);
+        directPaths = ClearDragRecordFromJunkDirection();
+        //DebugShowResultDrag(directPaths);
+        distanceDrag = 0;
+        distanceLine = 0;
+        checkDirection = directionType.none;
         GameManager.Inst.OnDragRuneEnd?.Invoke(directPaths);
         directPaths.Clear();
     }
@@ -160,8 +167,34 @@ public class DirectionFingerCapture : MonoBehaviour
     //Debug.Log("AvgDirection = " + direction);
     //Debug.Log("<color=red> {Direction = } </color>" + dirType);/*go to the left {if left svobodno}*/
 
+    private List<DirectRecord> ClearDragRecordFromJunkDirection()
+    {
+        if (directPaths.Count == 1)
+            return directPaths;
+
+        List<DirectRecord> resDirectPaths = new List<DirectRecord>();
+
+        foreach (var dir in directPaths)
+        {
+            
+            if (dir.distance/distanceDrag * 100f < junkPercent)
+            {
+                Debug.Log(distanceDrag + "  from " + dir.distance + " = procent " + dir.distance / distanceDrag);
+                Debug.Log("<color=green> {DropJunkDirection = } </color>" + dir.directionType);
+                continue;
+            }
+            resDirectPaths.Add(dir);
+        }
+        return resDirectPaths;
+    }
+
     private void RecordDrag(Vector2 direction)
     {
+        var heading = positionMouse - lastMousePosition;
+        var distance = heading.magnitude;
+        distanceDrag += distance;
+        distanceLine += distance;
+
         Vector2 minLDirection = MinLineAvg(direction);
         minLineDirection = CheckDirection(minLDirection);
 
@@ -241,17 +274,22 @@ public class DirectionFingerCapture : MonoBehaviour
     {
         countDirectionInput = 0;
         avgDirection = Vector2.zero;
-        distanceDrag = 0;
     }
 
     private void SaveRecord(directionType directionType, float distance)
     {
         if (directionType == directionType.none) return;
         if (directPaths.Count > 0)
+        {
             if (directPaths[directPaths.Count - 1].directionType == directionType) return;
-
+            
+            directPaths[directPaths.Count - 1].distance = distanceLine;
+        }
+        DirectRecord directRecord = new DirectRecord();
         directRecord.directionType = directionType;
+        directRecord.distance = distanceDrag;
         directPaths.Add(directRecord);
+        distanceLine = 0;
         lastMousePosition = positionMouse;
     }
 
@@ -299,8 +337,8 @@ public class DirectionFingerCapture : MonoBehaviour
 }
 
 [Serializable]
-public struct DirectRecord
+public class DirectRecord
 {
-    private float distance;
+    public float distance;
     public DirectionFingerCapture.directionType directionType;
 }
